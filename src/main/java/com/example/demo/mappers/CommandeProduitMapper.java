@@ -4,7 +4,7 @@ import com.example.demo.dto.CommandeProduitDTO;
 import com.example.demo.enties.CommandeProduit;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = MapperUtils.class)
 public interface CommandeProduitMapper {
 
     CommandeProduitDTO toDTO(CommandeProduit entity);

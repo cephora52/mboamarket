@@ -1,19 +1,15 @@
 package com.example.demo.dto;
 
 import java.util.Date;
+import java.util.List;
 
 public class ConversationDTO {
 
-    public Integer idConversation;
-    public Date dateCreation;
-
-    public ConversationDTO(Integer idConversation, Date dateCreation) {
-        this.idConversation = idConversation;
-        this.dateCreation = dateCreation;
-    }
+    private Integer idConversation;
+    private Date dateCreation;
+    private List<Integer> participants;
 
     public ConversationDTO() {
-
     }
 
     public Integer getIdConversation() {
@@ -30,5 +26,13 @@ public class ConversationDTO {
 
     public void setDateCreation(Date dateCreation) {
         this.dateCreation = dateCreation;
+    }
+
+    public List<Integer> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<Integer> participants) {
+        this.participants = participants;
     }
 }

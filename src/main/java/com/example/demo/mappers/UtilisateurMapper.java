@@ -4,7 +4,7 @@ import com.example.demo.dto.UtilisateurDTO;
 import com.example.demo.enties.Utilisateur;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = MapperUtils.class)
 public interface UtilisateurMapper {
 
     UtilisateurDTO toDTO(Utilisateur entity);

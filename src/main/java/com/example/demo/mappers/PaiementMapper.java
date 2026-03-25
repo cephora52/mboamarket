@@ -4,7 +4,7 @@ import com.example.demo.dto.PaiementDTO;
 import com.example.demo.enties.Paiement;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = MapperUtils.class)
 public interface PaiementMapper {
 
     PaiementDTO toDTO(Paiement entity);

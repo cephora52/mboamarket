@@ -2,26 +2,13 @@ package com.example.demo.mappers;
 
 import com.example.demo.dto.CategorieDTO;
 import com.example.demo.enties.Categorie;
+import org.mapstruct.Mapper;
 
+@Mapper(componentModel = "spring", uses = MapperUtils.class)
 public interface CategorieMapper {
 
-    public static CategorieDTO toDTO(Categorie entity) {
-        if (entity == null) return null;
+    CategorieDTO toDTO(Categorie entity);
 
-        CategorieDTO dto = new CategorieDTO();
-        dto.setIdCategorie(entity.getIdCategorie());
-        dto.setNomCategorie(entity.getNomCategorie());
+    Categorie toEntity(CategorieDTO dto);
 
-        return dto;
-    }
-
-    public static Categorie toEntity(CategorieDTO dto) {
-        if (dto == null) return null;
-
-        Categorie entity = new Categorie();
-        entity.setIdCategorie(dto.getIdCategorie());
-        entity.setNomCategorie(dto.getNomCategorie());
-
-        return entity;
-    }
 }

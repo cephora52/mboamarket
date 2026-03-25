@@ -4,7 +4,7 @@ import com.example.demo.dto.ConversationDTO;
 import com.example.demo.enties.Conversation;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = MapperUtils.class)
 public interface ConversationMapper {
 
     ConversationDTO toDTO(Conversation entity);

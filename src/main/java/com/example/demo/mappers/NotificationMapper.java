@@ -4,7 +4,7 @@ import com.example.demo.dto.NotificationDTO;
 import com.example.demo.enties.Notification;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = MapperUtils.class)
 public interface NotificationMapper {
 
     NotificationDTO toDTO(Notification entity);

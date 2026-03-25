@@ -4,7 +4,7 @@ import com.example.demo.dto.CommentaireDTO;
 import com.example.demo.enties.Commentaire;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = MapperUtils.class)
 public interface CommentaireMapper {
 
     CommentaireDTO toDTO(Commentaire entity);
