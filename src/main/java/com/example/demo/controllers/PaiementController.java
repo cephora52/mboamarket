@@ -41,4 +41,14 @@ public class PaiementController {
     public void delete(@PathVariable Integer id) {
         service.delete(id);
     }
+
+    @GetMapping("/distributeur/{idUser}")
+    public List<PaiementDTO> getByDistributeur(@PathVariable Integer idUser) {
+        return service.getByDistributeur(idUser);
+    }
+
+    @GetMapping("/agriculteur/{idUser}")
+    public List<PaiementDTO> getByAgriculteur(@PathVariable Integer idUser) {
+        return service.getByAgriculteur(idUser);
+    }
 }

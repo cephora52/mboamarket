@@ -1,6 +1,7 @@
 package com.example.demo.services.interfaces;
 
 import com.example.demo.dto.ProduitDTO;
+
 import java.util.List;
 
 public interface ProduitInterface {
@@ -14,5 +15,4 @@ public interface ProduitInterface {
     List<ProduitDTO> findAll();
 
     void delete(Integer id);
-
 }

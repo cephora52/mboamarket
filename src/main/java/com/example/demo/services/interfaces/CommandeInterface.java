@@ -5,19 +5,13 @@ import java.util.List;
 
 public interface CommandeInterface {
 
-    CommandeDTO save(CommandeDTO dto);
+    CommandeDTO create(CommandeDTO dto);
 
     CommandeDTO update(Integer id, CommandeDTO dto);
 
-    CommandeDTO findById(Integer id);
-
-    List<CommandeDTO> findAll();
-
-    void delete(Integer id);
+    CommandeDTO getById(Integer id);
 
     List<CommandeDTO> getAll();
 
-    CommandeDTO getById(Integer id);
-
-    CommandeDTO create(CommandeDTO dto);
+    void delete(Integer id);
 }

@@ -62,14 +62,16 @@ public class PaiementService implements PaiementInterface {
 
     @Override
     public PaiementDTO getById(Integer id) {
-        return mapper.toDTO(
-                paiementRepos.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Paiement non trouvé"))
-        );
+
+        Paiement paiement = paiementRepos.findById(id)
+                .orElseThrow(() -> new RuntimeException("Paiement non trouvé"));
+
+        return mapper.toDTO(paiement);
     }
 
     @Override
     public List<PaiementDTO> getAll() {
+
         return paiementRepos.findAll()
                 .stream()
                 .map(mapper::toDTO)
@@ -83,5 +85,23 @@ public class PaiementService implements PaiementInterface {
                 .orElseThrow(() -> new RuntimeException("Paiement non trouvé"));
 
         paiementRepos.delete(paiement);
+    }
+
+    @Override
+    public List<PaiementDTO> getByDistributeur(Integer idUser) {
+
+        return paiementRepos.findByDistributeur(idUser)
+                .stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PaiementDTO> getByAgriculteur(Integer idUser) {
+
+        return paiementRepos.findByAgriculteur(idUser)
+                .stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
     }
 }

@@ -1,128 +1,55 @@
 package com.example.demo.dto;
 
+import com.example.demo.enums.StatutProduit;
+
 import java.util.Date;
 
 public class ProduitDTO {
 
-    public Integer idProduit;
-    public String nomProduit;
-    public int qteProduit;
-    public double prix;
+    private Integer idProduit;
+    private String nomProduit;
+    private int qteProduit;
+    private double prix;
+    private Date datePublication;
+    private StatutProduit statutProduit;
+    private String photo;
+    private String uniteMesure;
+    private String localite;
+    private Integer idCategorie;
+    private Integer idAgriculteur;
 
-    public Date datePublication;
-    public String statutProduit;
+    public ProduitDTO() {}
 
-    public String photo;
-    public String uniteMesure;
-    public String localite;
+    public Integer getIdProduit() { return idProduit; }
+    public void setIdProduit(Integer idProduit) { this.idProduit = idProduit; }
 
-    // Relations (IDs seulement)
-    public Integer idCategorie;
-    public Integer idAgriculteur;
+    public String getNomProduit() { return nomProduit; }
+    public void setNomProduit(String nomProduit) { this.nomProduit = nomProduit; }
 
-    public ProduitDTO(Integer idProduit, String nomProduit, int qteProduit, double prix, Date datePublication, String statutProduit, String photo, String uniteMesure, String localite, Integer idCategorie, Integer idAgriculteur) {
-        this.idProduit = idProduit;
-        this.nomProduit = nomProduit;
-        this.qteProduit = qteProduit;
-        this.prix = prix;
-        this.datePublication = datePublication;
-        this.statutProduit = statutProduit;
-        this.photo = photo;
-        this.uniteMesure = uniteMesure;
-        this.localite = localite;
-        this.idCategorie = idCategorie;
-        this.idAgriculteur = idAgriculteur;
-    }
+    public int getQteProduit() { return qteProduit; }
+    public void setQteProduit(int qteProduit) { this.qteProduit = qteProduit; }
 
-    public ProduitDTO() {
+    public double getPrix() { return prix; }
+    public void setPrix(double prix) { this.prix = prix; }
 
-    }
+    public Date getDatePublication() { return datePublication; }
+    public void setDatePublication(Date datePublication) { this.datePublication = datePublication; }
 
-    public Integer getIdProduit() {
-        return idProduit;
-    }
+    public StatutProduit getStatutProduit() { return statutProduit; }
+    public void setStatutProduit(StatutProduit statutProduit) { this.statutProduit = statutProduit; }
 
-    public void setIdProduit(Integer idProduit) {
-        this.idProduit = idProduit;
-    }
+    public String getPhoto() { return photo; }
+    public void setPhoto(String photo) { this.photo = photo; }
 
-    public String getNomProduit() {
-        return nomProduit;
-    }
+    public String getUniteMesure() { return uniteMesure; }
+    public void setUniteMesure(String uniteMesure) { this.uniteMesure = uniteMesure; }
 
-    public void setNomProduit(String nomProduit) {
-        this.nomProduit = nomProduit;
-    }
+    public String getLocalite() { return localite; }
+    public void setLocalite(String localite) { this.localite = localite; }
 
-    public int getQteProduit() {
-        return qteProduit;
-    }
+    public Integer getIdCategorie() { return idCategorie; }
+    public void setIdCategorie(Integer idCategorie) { this.idCategorie = idCategorie; }
 
-    public void setQteProduit(int qteProduit) {
-        this.qteProduit = qteProduit;
-    }
-
-    public double getPrix() {
-        return prix;
-    }
-
-    public void setPrix(double prix) {
-        this.prix = prix;
-    }
-
-    public Date getDatePublication() {
-        return datePublication;
-    }
-
-    public void setDatePublication(Date datePublication) {
-        this.datePublication = datePublication;
-    }
-
-    public String getStatutProduit() {
-        return statutProduit;
-    }
-
-    public void setStatutProduit(String statutProduit) {
-        this.statutProduit = statutProduit;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public String getUniteMesure() {
-        return uniteMesure;
-    }
-
-    public void setUniteMesure(String uniteMesure) {
-        this.uniteMesure = uniteMesure;
-    }
-
-    public String getLocalite() {
-        return localite;
-    }
-
-    public void setLocalite(String localite) {
-        this.localite = localite;
-    }
-
-    public Integer getIdCategorie() {
-        return idCategorie;
-    }
-
-    public void setIdCategorie(Integer idCategorie) {
-        this.idCategorie = idCategorie;
-    }
-
-    public Integer getIdAgriculteur() {
-        return idAgriculteur;
-    }
-
-    public void setIdAgriculteur(Integer idAgriculteur) {
-        this.idAgriculteur = idAgriculteur;
-    }
+    public Integer getIdAgriculteur() { return idAgriculteur; }
+    public void setIdAgriculteur(Integer idAgriculteur) { this.idAgriculteur = idAgriculteur; }
 }

@@ -9,9 +9,8 @@ import org.mapstruct.Mapping;
 public interface CommandeMapper {
 
     @Mapping(source = "idDistributeur", target = "idDistributeur")
-    CommandeDTO toDTO(Commande entity);
-
-    @Mapping(source = "idDistributeur", target = "idDistributeur")
     Commande toEntity(CommandeDTO dto);
 
+    @Mapping(source = "idDistributeur", target = "idDistributeur")
+    CommandeDTO toDTO(Commande entity);
 }

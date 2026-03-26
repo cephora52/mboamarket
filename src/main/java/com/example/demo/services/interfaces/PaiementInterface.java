@@ -14,4 +14,9 @@ public interface PaiementInterface {
     List<PaiementDTO> getAll();
 
     void delete(Integer id);
+
+    List<PaiementDTO> getByDistributeur(Integer idUser);
+
+    List<PaiementDTO> getByAgriculteur(Integer idUser);
+
 }

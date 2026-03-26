@@ -1,30 +1,29 @@
 package com.example.demo.dto;
 
+import com.example.demo.enums.StatutCommande;
 import java.util.Date;
 
 public class CommandeDTO {
 
-    public Integer idCommande;
-    public Date dateCommande;
+    private Integer idCommande;
+    private Date dateCommande;
+    private double montantTotal;
+    private StatutCommande statutCmd;
+    private Integer idDistributeur;
 
-    public int qteCommande;
-    public double montantTotal;
+    public CommandeDTO() {
+    }
 
-    public String statutCmd;
+    public CommandeDTO(Integer idCommande, Date dateCommande,
+                       double montantTotal,
+                       StatutCommande statutCmd,
+                       Integer idDistributeur) {
 
-    // Relation
-    public Integer idDistributeur;
-
-    public CommandeDTO(Integer idCommande, Date dateCommande, int qteCommande, double montantTotal, String statutCmd, Integer idDistributeur) {
         this.idCommande = idCommande;
         this.dateCommande = dateCommande;
-        this.qteCommande = qteCommande;
         this.montantTotal = montantTotal;
         this.statutCmd = statutCmd;
         this.idDistributeur = idDistributeur;
-    }
-
-    public CommandeDTO() {
     }
 
     public Integer getIdCommande() {
@@ -43,14 +42,6 @@ public class CommandeDTO {
         this.dateCommande = dateCommande;
     }
 
-    public int getQteCommande() {
-        return qteCommande;
-    }
-
-    public void setQteCommande(int qteCommande) {
-        this.qteCommande = qteCommande;
-    }
-
     public double getMontantTotal() {
         return montantTotal;
     }
@@ -59,11 +50,11 @@ public class CommandeDTO {
         this.montantTotal = montantTotal;
     }
 
-    public String getStatutCmd() {
+    public StatutCommande getStatutCmd() {
         return statutCmd;
     }
 
-    public void setStatutCmd(String statutCmd) {
+    public void setStatutCmd(StatutCommande statutCmd) {
         this.statutCmd = statutCmd;
     }
 

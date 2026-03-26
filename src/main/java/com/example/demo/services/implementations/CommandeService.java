@@ -7,41 +7,40 @@ import com.example.demo.mappers.CommandeMapper;
 import com.example.demo.repositories.CommandeRepos;
 import com.example.demo.repositories.UtilisateurRepos;
 import com.example.demo.services.interfaces.CommandeInterface;
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class CommandeService implements CommandeInterface {
 
     private final CommandeRepos commandeRepos;
     private final UtilisateurRepos utilisateurRepos;
-    private final CommandeMapper commandeMapper;
+    private final CommandeMapper mapper;
 
-    public CommandeService(CommandeRepos commandeRepos, UtilisateurRepos utilisateurRepos, CommandeMapper commandeMapper) {
+    public CommandeService(CommandeRepos commandeRepos,
+                           UtilisateurRepos utilisateurRepos,
+                           CommandeMapper mapper) {
         this.commandeRepos = commandeRepos;
         this.utilisateurRepos = utilisateurRepos;
-        this.commandeMapper = commandeMapper;
+        this.mapper = mapper;
     }
 
     @Override
-    public CommandeDTO save(CommandeDTO dto) {
-
-        Commande commande = commandeMapper.toEntity(dto);
+    public CommandeDTO create(CommandeDTO dto) {
 
         Utilisateur distributeur = utilisateurRepos.findById(dto.getIdDistributeur())
                 .orElseThrow(() -> new RuntimeException("Distributeur non trouvé"));
 
-        commande.setIdDistributeur(distributeur);
+        Commande commande = mapper.toEntity(dto);
 
         commande.setDateCommande(new Date());
-        commande.setStatutCmd("EN_ATTENTE");
 
-        return commandeMapper.toDTO(commandeRepos.save(commande));
+        commande.setIdDistributeur(distributeur);
+
+        return mapper.toDTO(commandeRepos.save(commande));
     }
 
     @Override
@@ -50,53 +49,36 @@ public class CommandeService implements CommandeInterface {
         Commande commande = commandeRepos.findById(id)
                 .orElseThrow(() -> new RuntimeException("Commande non trouvée"));
 
-        commande.setQteCommande(dto.getQteCommande());
         commande.setMontantTotal(dto.getMontantTotal());
         commande.setStatutCmd(dto.getStatutCmd());
 
-        return commandeMapper.toDTO(commandeRepos.save(commande));
+        return mapper.toDTO(commandeRepos.save(commande));
     }
 
     @Override
-    public CommandeDTO findById(Integer id) {
+    public CommandeDTO getById(Integer id) {
 
-        Commande commande = commandeRepos.findById(id)
-                .orElseThrow(() -> new RuntimeException("Commande non trouvée"));
-
-        return commandeMapper.toDTO(commande);
+        return mapper.toDTO(
+                commandeRepos.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Commande non trouvée"))
+        );
     }
 
     @Override
-    public List<CommandeDTO> findAll() {
+    public List<CommandeDTO> getAll() {
 
         return commandeRepos.findAll()
                 .stream()
-                .map(commandeMapper::toDTO)
-                .toList();
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     public void delete(Integer id) {
 
-        if (!commandeRepos.existsById(id)) {
-            throw new RuntimeException("Commande introuvable");
-        }
+        Commande commande = commandeRepos.findById(id)
+                .orElseThrow(() -> new RuntimeException("Commande non trouvée"));
 
-        commandeRepos.deleteById(id);
-    }
-
-    @Override
-    public List<CommandeDTO> getAll() {
-        return null;
-    }
-
-    @Override
-    public CommandeDTO getById(Integer id) {
-        return null;
-    }
-
-    @Override
-    public CommandeDTO create(CommandeDTO dto) {
-        return null;
+        commandeRepos.delete(commande);
     }
 }

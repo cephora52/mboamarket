@@ -36,12 +36,13 @@ public class UtilisateurController {
         return service.update(id, dto);
     }
 
+    public UtilisateurController(UtilisateurInterface service) {
+        this.service = service;
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id) {
         service.delete(id);
     }
 
-    public UtilisateurController(UtilisateurInterface service) {
-        this.service = service;
-    }
 }

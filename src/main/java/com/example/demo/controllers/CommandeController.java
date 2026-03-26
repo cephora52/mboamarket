@@ -10,35 +10,35 @@ import java.util.List;
 @RequestMapping("/commandes")
 public class CommandeController {
 
-    private final CommandeInterface commandeService;
+    private final CommandeInterface service;
 
-    public CommandeController(CommandeInterface commandeService) {
-        this.commandeService = commandeService;
+    public CommandeController(CommandeInterface service) {
+        this.service = service;
     }
 
     @PostMapping
-    public CommandeDTO create(@RequestBody CommandeDTO dto){
-        return commandeService.create(dto);
-    }
-
-    @GetMapping("/{id}")
-    public CommandeDTO getById(@PathVariable Integer id){
-        return commandeService.getById(id);
-    }
-
-    @GetMapping
-    public List<CommandeDTO> getAll(){
-        return commandeService.getAll();
+    public CommandeDTO create(@RequestBody CommandeDTO dto) {
+        return service.create(dto);
     }
 
     @PutMapping("/{id}")
     public CommandeDTO update(@PathVariable Integer id,
-                              @RequestBody CommandeDTO dto){
-        return commandeService.update(id, dto);
+                              @RequestBody CommandeDTO dto) {
+        return service.update(id, dto);
+    }
+
+    @GetMapping("/{id}")
+    public CommandeDTO getById(@PathVariable Integer id) {
+        return service.getById(id);
+    }
+
+    @GetMapping
+    public List<CommandeDTO> getAll() {
+        return service.getAll();
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id){
-        commandeService.delete(id);
+    public void delete(@PathVariable Integer id) {
+        service.delete(id);
     }
 }

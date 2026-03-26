@@ -4,48 +4,49 @@ import com.example.demo.dto.ProduitDTO;
 import com.example.demo.enties.Categorie;
 import com.example.demo.enties.Produit;
 import com.example.demo.enties.Utilisateur;
+import com.example.demo.enums.StatutProduit;
 import com.example.demo.mappers.ProduitMapper;
 import com.example.demo.repositories.CategorieRepos;
 import com.example.demo.repositories.ProduitRepos;
 import com.example.demo.repositories.UtilisateurRepos;
 import com.example.demo.services.interfaces.ProduitInterface;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+
 public class ProduitService implements ProduitInterface {
 
     private final ProduitRepos produitRepos;
     private final CategorieRepos categorieRepos;
     private final UtilisateurRepos utilisateurRepos;
-    private final ProduitMapper produitMapper;
-
-    public ProduitService(ProduitRepos produitRepos, CategorieRepos categorieRepos, UtilisateurRepos utilisateurRepos, ProduitMapper produitMapper) {
-        this.produitRepos = produitRepos;
-        this.categorieRepos = categorieRepos;
-        this.utilisateurRepos = utilisateurRepos;
-        this.produitMapper = produitMapper;
-    }
+    private final ProduitMapper mapper;
 
     @Override
     public ProduitDTO save(ProduitDTO dto) {
 
-        Produit produit = produitMapper.toEntity(dto);
+        Produit produit = mapper.toEntity(dto);
 
-        Categorie categorie = categorieRepos.findById(dto.getIdCategorie())
+        Categorie cat = categorieRepos.findById(dto.getIdCategorie())
                 .orElseThrow(() -> new RuntimeException("Catégorie non trouvée"));
 
         Utilisateur agriculteur = utilisateurRepos.findById(dto.getIdAgriculteur())
-                .orElseThrow(() -> new RuntimeException("Utilisateur (agriculteur) non trouvé"));
+                .orElseThrow(() -> new RuntimeException("Agriculteur non trouvé"));
 
-        produit.setIdCategorie(categorie);
+        produit.setIdCategorie(cat);
         produit.setIdAgriculteur(agriculteur);
+        produit.setDatePublication(new Date());
 
-        return produitMapper.toDTO(produitRepos.save(produit));
+        // logique automatique statut
+        if (produit.getQteProduit() == 0)
+            produit.setStatutProduit(StatutProduit.EPUISE);
+        else
+            produit.setStatutProduit(StatutProduit.DISPONIBLE);
+
+        return mapper.toDTO(produitRepos.save(produit));
     }
 
     @Override
@@ -57,39 +58,37 @@ public class ProduitService implements ProduitInterface {
         produit.setNomProduit(dto.getNomProduit());
         produit.setPrix(dto.getPrix());
         produit.setQteProduit(dto.getQteProduit());
-        produit.setLocalite(dto.getLocalite());
-        produit.setStatutProduit(dto.getStatutProduit());
-        produit.setPhoto(dto.getPhoto());
-        produit.setUniteMesure(dto.getUniteMesure());
 
-        return produitMapper.toDTO(produitRepos.save(produit));
+        if (dto.getQteProduit() == 0)
+            produit.setStatutProduit(StatutProduit.EPUISE);
+        else
+            produit.setStatutProduit(StatutProduit.DISPONIBLE);
+
+        return mapper.toDTO(produitRepos.save(produit));
     }
 
     @Override
     public ProduitDTO findById(Integer id) {
-
-        Produit produit = produitRepos.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produit non trouvé"));
-
-        return produitMapper.toDTO(produit);
+        return mapper.toDTO(
+                produitRepos.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Produit non trouvé"))
+        );
     }
 
     @Override
     public List<ProduitDTO> findAll() {
-
-        return produitRepos.findAll()
-                .stream()
-                .map(produitMapper::toDTO)
-                .toList();
+        return produitRepos.findAll().stream().map(mapper::toDTO).toList();
     }
 
     @Override
     public void delete(Integer id) {
-
-        if (!produitRepos.existsById(id)) {
-            throw new RuntimeException("Produit introuvable pour suppression");
-        }
-
         produitRepos.deleteById(id);
+    }
+
+    public ProduitService(ProduitRepos produitRepos, CategorieRepos categorieRepos, UtilisateurRepos utilisateurRepos, ProduitMapper mapper) {
+        this.produitRepos = produitRepos;
+        this.categorieRepos = categorieRepos;
+        this.utilisateurRepos = utilisateurRepos;
+        this.mapper = mapper;
     }
 }
