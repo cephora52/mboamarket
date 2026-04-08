@@ -1,67 +1,79 @@
 package com.example.demo.enties;
 
-
+import com.example.demo.enums.Role;
 import jakarta.persistence.*;
-import java.util.List;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "utilisateur")
-@NamedQueries({
-        @NamedQuery(name = "Utilisateur.findAll", query = "SELECT u FROM Utilisateur u"),
-        @NamedQuery(name = "Utilisateur.findByIdUtilisateur", query = "SELECT u FROM Utilisateur u WHERE u.idUtilisateur = :idUtilisateur"),
-        @NamedQuery(name = "Utilisateur.findByNom", query = "SELECT u FROM Utilisateur u WHERE u.nom = :nom"),
-        @NamedQuery(name = "Utilisateur.findByTelephone", query = "SELECT u FROM Utilisateur u WHERE u.telephone = :telephone"),
-        @NamedQuery(name = "Utilisateur.findByVille", query = "SELECT u FROM Utilisateur u WHERE u.ville = :ville"),
-        @NamedQuery(name = "Utilisateur.findByRole", query = "SELECT u FROM Utilisateur u WHERE u.role = :role")})
 public class Utilisateur implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    // ===== ID =====
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idUtilisateur")
     private Integer idUtilisateur;
-    @Basic(optional = false)
-    @Column(name = "nom")
+
+    // ===== INFOS =====
+    @Column(nullable = false)
     private String nom;
-    @Basic(optional = false)
-    @Column(name = "telephone")
+
+    @Column(nullable = false)
     private String telephone;
-    @Column(name = "ville")
+
     private String ville;
-    @Basic(optional = false)
-    @Column(name = "role")
-    private String role;
-    @JoinTable(name = "utilisateur_conversation", joinColumns = {
-            @JoinColumn(name = "idUtilisateur", referencedColumnName = "idUtilisateur")}, inverseJoinColumns = {
-            @JoinColumn(name = "idConversation", referencedColumnName = "idConversation")})
+
+    // ===== AUTH =====
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    // ===== ROLE =====
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+    // ===== RELATIONS =====
     @ManyToMany
+    @JoinTable(
+            name = "utilisateur_conversation",
+            joinColumns = @JoinColumn(name = "idUtilisateur"),
+            inverseJoinColumns = @JoinColumn(name = "idConversation")
+    )
     private List<Conversation> conversationCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUtilisateur")
+
+    @OneToMany(mappedBy = "idUtilisateur", cascade = CascadeType.ALL)
     private List<Notification> notificationCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAgriculteur")
+
+    @OneToMany(mappedBy = "idAgriculteur", cascade = CascadeType.ALL)
     private List<Produit> produitCollection;
+
     @OneToOne(mappedBy = "idAgriculteur")
     private IndiceFiabilite indiceFiabilite;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDistributeur")
+
+    @OneToMany(mappedBy = "idDistributeur", cascade = CascadeType.ALL)
     private List<Commande> commandeCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDistributeur")
+
+    @OneToMany(mappedBy = "idDistributeur", cascade = CascadeType.ALL)
     private List<Commentaire> commentaireCollection;
 
-    public Utilisateur() {
-    }
+    // ===== CONSTRUCTEURS =====
+    public Utilisateur() {}
 
-    public Utilisateur(Integer idUtilisateur) {
-        this.idUtilisateur = idUtilisateur;
-    }
-
-    public Utilisateur(Integer idUtilisateur, String nom, String telephone, String role) {
+    public Utilisateur(Integer idUtilisateur, String nom, String telephone, String email, String password, Role role) {
         this.idUtilisateur = idUtilisateur;
         this.nom = nom;
         this.telephone = telephone;
+        this.email = email;
+        this.password = password;
         this.role = role;
     }
+
+    // ===== GETTERS & SETTERS =====
 
     public Integer getIdUtilisateur() {
         return idUtilisateur;
@@ -95,11 +107,27 @@ public class Utilisateur implements Serializable {
         this.ville = ville;
     }
 
-    public String getRole() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -151,29 +179,23 @@ public class Utilisateur implements Serializable {
         this.commentaireCollection = commentaireCollection;
     }
 
+    // ===== EQUALS & HASHCODE =====
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idUtilisateur != null ? idUtilisateur.hashCode() : 0);
-        return hash;
+        return (idUtilisateur != null ? idUtilisateur.hashCode() : 0);
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Utilisateur)) {
             return false;
         }
         Utilisateur other = (Utilisateur) object;
-        if ((this.idUtilisateur == null && other.idUtilisateur != null) || (this.idUtilisateur != null && !this.idUtilisateur.equals(other.idUtilisateur))) {
-            return false;
-        }
-        return true;
+        return (this.idUtilisateur != null && this.idUtilisateur.equals(other.idUtilisateur));
     }
 
     @Override
     public String toString() {
-        return "com.mycompany.mboamarket.Utilisateur[ idUtilisateur=" + idUtilisateur + " ]";
+        return "Utilisateur[id=" + idUtilisateur + "]";
     }
-
 }

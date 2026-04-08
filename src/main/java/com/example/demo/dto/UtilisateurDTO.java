@@ -1,26 +1,37 @@
 package com.example.demo.dto;
 
+import com.example.demo.enums.Role;
+
 public class UtilisateurDTO {
 
-    public Integer idUtilisateur;
+    private Integer idUtilisateur;
 
-    public String nom;
-    public String telephone;
-    public String ville;
+    private String nom;
+    private String telephone;
+    private String ville;
 
-    public String role; // AGRICULTEUR ou DISTRIBUTEUR
+    private String email;
+    private String password;
 
-    public UtilisateurDTO(Integer idUtilisateur, String nom, String telephone, String ville, String role) {
+    private Role role;
+
+    // ===== CONSTRUCTEURS =====
+
+    public UtilisateurDTO() {
+    }
+
+    public UtilisateurDTO(Integer idUtilisateur, String nom, String telephone, String ville,
+                          String email, String password, Role role) {
         this.idUtilisateur = idUtilisateur;
         this.nom = nom;
         this.telephone = telephone;
         this.ville = ville;
+        this.email = email;
+        this.password = password;
         this.role = role;
     }
 
-    public UtilisateurDTO() {
-
-    }
+    // ===== GETTERS & SETTERS =====
 
     public Integer getIdUtilisateur() {
         return idUtilisateur;
@@ -54,11 +65,27 @@ public class UtilisateurDTO {
         this.ville = ville;
     }
 
-    public String getRole() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/produits")
-@RequiredArgsConstructor
+
 public class ProduitController {
 
     private final ProduitInterface service;

@@ -12,43 +12,61 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+
 public class UtilisateurService implements UtilisateurInterface {
 
     private final UtilisateurRepos utilisateurRepos;
-    private final UtilisateurMapper mapper;
 
-    public UtilisateurService(UtilisateurRepos utilisateurRepos, UtilisateurMapper mapper) {
-        this.utilisateurRepos = utilisateurRepos;
-        this.mapper = mapper;
+    // ===== CREATE =====
+    @Override
+    public UtilisateurDTO save(UtilisateurDTO dto) {
+
+        // Vérifier email unique
+        if (utilisateurRepos.existsByEmail(dto.getEmail())) {
+            throw new RuntimeException("Email déjà utilisé");
+        }
+
+        Utilisateur user = UtilisateurMapper.toEntity(dto);
+
+        return UtilisateurMapper.toDTO(utilisateurRepos.save(user));
     }
 
+    // ===== READ BY ID =====
     @Override
-    public UtilisateurDTO create(UtilisateurDTO dto) {
-
-        Utilisateur user = mapper.toEntity(dto);
-
-        return mapper.toDTO(utilisateurRepos.save(user));
-    }
-
-    @Override
-    public UtilisateurDTO getById(Integer id) {
+    public UtilisateurDTO findById(Integer id) {
 
         Utilisateur user = utilisateurRepos.findById(id)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
-        return mapper.toDTO(user);
+        return UtilisateurMapper.toDTO(user);
+    }
+
+    // ===== READ ALL =====
+    @Override
+    public List<UtilisateurDTO> findAll() {
+
+        return utilisateurRepos.findAll()
+                .stream()
+                .map(UtilisateurMapper::toDTO)
+                .toList();
+    }
+
+    @Override
+    public UtilisateurDTO create(UtilisateurDTO dto) {
+        return null;
+    }
+
+    @Override
+    public UtilisateurDTO getById(Integer id) {
+        return null;
     }
 
     @Override
     public List<UtilisateurDTO> getAll() {
-
-        return utilisateurRepos.findAll()
-                .stream()
-                .map(mapper::toDTO)
-                .toList();
+        return null;
     }
 
+    // ===== UPDATE =====
     @Override
     public UtilisateurDTO update(Integer id, UtilisateurDTO dto) {
 
@@ -60,15 +78,25 @@ public class UtilisateurService implements UtilisateurInterface {
         user.setVille(dto.getVille());
         user.setRole(dto.getRole());
 
-        return mapper.toDTO(utilisateurRepos.save(user));
+        // ⚠️ optionnel : update email/password
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+
+        return UtilisateurMapper.toDTO(utilisateurRepos.save(user));
     }
 
+    // ===== DELETE =====
     @Override
     public void delete(Integer id) {
 
-        Utilisateur user = utilisateurRepos.findById(id)
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        if (!utilisateurRepos.existsById(id)) {
+            throw new RuntimeException("Utilisateur introuvable");
+        }
 
-        utilisateurRepos.delete(user);
+        utilisateurRepos.deleteById(id);
+    }
+
+    public UtilisateurService(UtilisateurRepos utilisateurRepos) {
+        this.utilisateurRepos = utilisateurRepos;
     }
 }
