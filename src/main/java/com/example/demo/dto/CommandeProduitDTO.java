@@ -6,10 +6,13 @@ public class CommandeProduitDTO {
     public Integer idProduit;
 
     public int quantite;
+    private String nomProduit;
+    private double prix;
+    private String imageProduit;
 
     public CommandeProduitDTO() {
-
     }
+
 
     public CommandeProduitDTO(Integer idCommande, Integer idProduit, int quantite) {
         this.idCommande = idCommande;
@@ -40,4 +43,30 @@ public class CommandeProduitDTO {
     public void setQuantite(int quantite) {
         this.quantite = quantite;
     }
+
+    public String getNomProduit() {
+        return nomProduit;
+    }
+
+    public void setNomProduit(String nomProduit) {
+        this.nomProduit = nomProduit;
+    }
+
+    public double getPrix() {
+        return prix;
+    }
+
+    public void setPrix(double prix) {
+        this.prix = prix;
+    }
+
+    public String getImageProduit() {
+        return imageProduit;
+    }
+
+    public void setImageProduit(String imageProduit) {
+        this.imageProduit = imageProduit;
+    }
 }
+
+

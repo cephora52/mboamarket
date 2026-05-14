@@ -9,7 +9,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/produits")
-
 public class ProduitController {
 
     private final ProduitInterface service;
@@ -33,6 +32,11 @@ public class ProduitController {
     @GetMapping
     public List<ProduitDTO> getAll(){
         return service.findAll();
+    }
+
+    @GetMapping("/agriculteur/{id}")
+    public List<ProduitDTO> getByAgriculteur(@PathVariable Integer id) {
+        return service.findByAgriculteur(id);
     }
 
     @DeleteMapping("/{id}")

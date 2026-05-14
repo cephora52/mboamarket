@@ -3,6 +3,9 @@ package com.example.demo.mappers;
 import com.example.demo.enties.*;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Component
 public class MapperUtils {
 
@@ -102,4 +105,9 @@ public class MapperUtils {
         return m;
     }
 
+    // ===== DATE =====
+    public String map(LocalDateTime dt) {
+        if (dt == null) return null;
+        return dt.format(DateTimeFormatter.ofPattern("MMMM yyyy"));
+    }
 }

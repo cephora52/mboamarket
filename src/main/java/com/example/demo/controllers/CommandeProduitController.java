@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/commande-produits")
-@RequiredArgsConstructor
 public class CommandeProduitController {
 
     private final CommandeProduitInterface service;

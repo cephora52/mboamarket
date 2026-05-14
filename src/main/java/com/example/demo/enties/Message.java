@@ -18,15 +18,27 @@ public class Message implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateEnvoi;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "idConversation")
     private Conversation conversation;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "idExpediteur")
     private Utilisateur expediteur;
 
-    public Message() {}
+    @ManyToOne
+    @JoinColumn(name = "idDestinataire")
+    private Utilisateur destinataire;
+
+    @Column(columnDefinition = "LONGTEXT")
+    private String image;
+
+    @Column(name = "lu")
+    private boolean lu = false;
+
+    public Message() {
+        this.dateEnvoi = new Date();
+    }
 
     public Integer getIdMessage() {
         return idMessage;
@@ -66,5 +78,29 @@ public class Message implements Serializable {
 
     public void setExpediteur(Utilisateur expediteur) {
         this.expediteur = expediteur;
+    }
+
+    public Utilisateur getDestinataire() {
+        return destinataire;
+    }
+
+    public void setDestinataire(Utilisateur destinataire) {
+        this.destinataire = destinataire;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public boolean isLu() {
+        return lu;
+    }
+
+    public void setLu(boolean lu) {
+        this.lu = lu;
     }
 }

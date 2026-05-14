@@ -16,7 +16,10 @@ public class ProduitDTO {
     private String uniteMesure;
     private String localite;
     private Integer idCategorie;
+    private String nomCategorie;
     private Integer idAgriculteur;
+    private String nomAgriculteur;
+    private String photoAgriculteur;
 
     public ProduitDTO() {}
 
@@ -50,6 +53,15 @@ public class ProduitDTO {
     public Integer getIdCategorie() { return idCategorie; }
     public void setIdCategorie(Integer idCategorie) { this.idCategorie = idCategorie; }
 
+    public String getNomCategorie() { return nomCategorie; }
+    public void setNomCategorie(String nomCategorie) { this.nomCategorie = nomCategorie; }
+
     public Integer getIdAgriculteur() { return idAgriculteur; }
     public void setIdAgriculteur(Integer idAgriculteur) { this.idAgriculteur = idAgriculteur; }
+
+    public String getNomAgriculteur() { return nomAgriculteur; }
+    public void setNomAgriculteur(String nomAgriculteur) { this.nomAgriculteur = nomAgriculteur; }
+
+    public String getPhotoAgriculteur() { return photoAgriculteur; }
+    public void setPhotoAgriculteur(String photoAgriculteur) { this.photoAgriculteur = photoAgriculteur; }
 }

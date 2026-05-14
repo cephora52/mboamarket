@@ -34,6 +34,10 @@ public class Commande implements Serializable {
     @JoinColumn(name = "idDistributeur")
     private Utilisateur idDistributeur;
 
+    @ManyToOne
+    @JoinColumn(name = "idAgriculteur")
+    private Utilisateur idAgriculteur;
+
     public Commande() {
     }
 
@@ -41,13 +45,15 @@ public class Commande implements Serializable {
                     Date dateCommande,
                     double montantTotal,
                     StatutCommande statutCmd,
-                    Utilisateur idDistributeur) {
+                    Utilisateur idDistributeur,
+                    Utilisateur idAgriculteur) {
 
         this.idCommande = idCommande;
         this.dateCommande = dateCommande;
         this.montantTotal = montantTotal;
         this.statutCmd = statutCmd;
         this.idDistributeur = idDistributeur;
+        this.idAgriculteur = idAgriculteur;
     }
 
     public Integer getIdCommande() {
@@ -104,5 +110,13 @@ public class Commande implements Serializable {
 
     public void setIdDistributeur(Utilisateur idDistributeur) {
         this.idDistributeur = idDistributeur;
+    }
+
+    public Utilisateur getIdAgriculteur() {
+        return idAgriculteur;
+    }
+
+    public void setIdAgriculteur(Utilisateur idAgriculteur) {
+        this.idAgriculteur = idAgriculteur;
     }
 }

@@ -30,45 +30,25 @@ public class ConversationService implements ConversationInterface {
 
     @Override
     public ConversationDTO create(ConversationDTO dto) {
+        Utilisateur user1 = utilisateurRepos.findById(dto.getIdUser1())
+                .orElseThrow(() -> new RuntimeException("Utilisateur 1 non trouvé"));
+        Utilisateur user2 = utilisateurRepos.findById(dto.getIdUser2())
+                .orElseThrow(() -> new RuntimeException("Utilisateur 2 non trouvé"));
 
-        Conversation conversation = new Conversation();
-
-        List<Utilisateur> users = dto.getParticipants()
-                .stream()
-                .map(id -> utilisateurRepos.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé")))
-                .collect(Collectors.toList());
-
-        conversation.setUtilisateurCollection(users);
-
+        Conversation conversation = new Conversation(user1, user2);
         Conversation saved = conversationRepos.save(conversation);
 
-        ConversationDTO response = mapper.toDTO(saved);
-        response.setParticipants(
-                users.stream().map(Utilisateur::getIdUtilisateur).collect(Collectors.toList())
-        );
-
-        return response;
+        return mapper.toDTO(saved);
     }
 
     @Override
     public List<ConversationDTO> getUserConversations(Integer userId) {
-
         Utilisateur user = utilisateurRepos.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
-        return user.getConversationCollection()
+        return conversationRepos.findAllByUser(user)
                 .stream()
-                .map(conv -> {
-                    ConversationDTO dto = mapper.toDTO(conv);
-                    dto.setParticipants(
-                            conv.getUtilisateurCollection()
-                                    .stream()
-                                    .map(Utilisateur::getIdUtilisateur)
-                                    .collect(Collectors.toList())
-                    );
-                    return dto;
-                })
+                .map(mapper::toDTO)
                 .collect(Collectors.toList());
     }
 }

@@ -14,5 +14,7 @@ public interface ProduitInterface {
 
     List<ProduitDTO> findAll();
 
+    List<ProduitDTO> findByAgriculteur(Integer id);
+
     void delete(Integer id);
 }

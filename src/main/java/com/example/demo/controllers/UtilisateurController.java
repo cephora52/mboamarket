@@ -3,15 +3,12 @@ package com.example.demo.controllers;
 import com.example.demo.dto.UtilisateurDTO;
 import com.example.demo.services.interfaces.UtilisateurInterface;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/utilisateurs")
-@RequiredArgsConstructor
-@CrossOrigin(origins = "*") // 🔥 pour Angular
 public class UtilisateurController {
 
     private final UtilisateurInterface service;

@@ -1,5 +1,6 @@
 package com.example.demo.enties;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.example.demo.enums.StatutProduit;
 import jakarta.persistence.*;
 
@@ -30,7 +31,8 @@ public class Produit implements Serializable {
     @Enumerated(EnumType.STRING)
     private StatutProduit statutProduit;
 
-    private String photo;
+    @Column(columnDefinition = "LONGTEXT")
+    private String imageProduit;
     private String uniteMesure;
     private String localite;
 
@@ -38,13 +40,15 @@ public class Produit implements Serializable {
     @JoinColumn(name = "idCategorie")
     private Categorie idCategorie;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idAgriculteur")
     private Utilisateur idAgriculteur;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "produit")
     private List<CommandeProduit> commandeProduitCollection;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "idProduit")
     private List<Commentaire> commentaireCollection;
 
@@ -68,8 +72,8 @@ public class Produit implements Serializable {
     public StatutProduit getStatutProduit() { return statutProduit; }
     public void setStatutProduit(StatutProduit statutProduit) { this.statutProduit = statutProduit; }
 
-    public String getPhoto() { return photo; }
-    public void setPhoto(String photo) { this.photo = photo; }
+    public String getImageProduit() { return imageProduit; }
+    public void setImageProduit(String imageProduit) { this.imageProduit = imageProduit; }
 
     public String getUniteMesure() { return uniteMesure; }
     public void setUniteMesure(String uniteMesure) { this.uniteMesure = uniteMesure; }

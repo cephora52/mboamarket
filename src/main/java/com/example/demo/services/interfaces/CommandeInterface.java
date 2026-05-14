@@ -1,5 +1,6 @@
 package com.example.demo.services.interfaces;
 
+import com.example.demo.dto.CheckoutRequestDTO;
 import com.example.demo.dto.CommandeDTO;
 import java.util.List;
 
@@ -12,6 +13,12 @@ public interface CommandeInterface {
     CommandeDTO getById(Integer id);
 
     List<CommandeDTO> getAll();
+
+    List<CommandeDTO> getByDistributeur(Integer id);
+
+    List<CommandeDTO> getByAgriculteur(Integer id);
+
+    List<CommandeDTO> payerPanier(CheckoutRequestDTO dto);
 
     void delete(Integer id);
 }

@@ -10,6 +10,10 @@ public class CommandeDTO {
     private double montantTotal;
     private StatutCommande statutCmd;
     private Integer idDistributeur;
+    private Integer idAgriculteur;
+    private String nomAgriculteur;
+    private String nomDistributeur;
+    private java.util.List<CommandeProduitDTO> items;
 
     public CommandeDTO() {
     }
@@ -17,13 +21,15 @@ public class CommandeDTO {
     public CommandeDTO(Integer idCommande, Date dateCommande,
                        double montantTotal,
                        StatutCommande statutCmd,
-                       Integer idDistributeur) {
+                       Integer idDistributeur,
+                       Integer idAgriculteur) {
 
         this.idCommande = idCommande;
         this.dateCommande = dateCommande;
         this.montantTotal = montantTotal;
         this.statutCmd = statutCmd;
         this.idDistributeur = idDistributeur;
+        this.idAgriculteur = idAgriculteur;
     }
 
     public Integer getIdCommande() {
@@ -65,4 +71,37 @@ public class CommandeDTO {
     public void setIdDistributeur(Integer idDistributeur) {
         this.idDistributeur = idDistributeur;
     }
+
+    public Integer getIdAgriculteur() {
+        return idAgriculteur;
+    }
+
+    public void setIdAgriculteur(Integer idAgriculteur) {
+        this.idAgriculteur = idAgriculteur;
+    }
+
+    public String getNomAgriculteur() {
+        return nomAgriculteur;
+    }
+
+    public void setNomAgriculteur(String nomAgriculteur) {
+        this.nomAgriculteur = nomAgriculteur;
+    }
+
+    public java.util.List<CommandeProduitDTO> getItems() {
+        return items;
+    }
+
+    public void setItems(java.util.List<CommandeProduitDTO> items) {
+        this.items = items;
+    }
+
+    public String getNomDistributeur() {
+        return nomDistributeur;
+    }
+
+    public void setNomDistributeur(String nomDistributeur) {
+        this.nomDistributeur = nomDistributeur;
+    }
 }
+

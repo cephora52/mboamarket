@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class CommandeProduitService implements CommandeProduitInterface {
 
     private final CommandeProduitRepos commandeProduitRepos;

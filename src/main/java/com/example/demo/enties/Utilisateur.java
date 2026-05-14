@@ -1,8 +1,10 @@
 package com.example.demo.enties;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.example.demo.enums.Role;
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -37,27 +39,41 @@ public class Utilisateur implements Serializable {
     @Column(nullable = false)
     private Role role;
 
-    // ===== RELATIONS =====
-    @ManyToMany
-    @JoinTable(
-            name = "utilisateur_conversation",
-            joinColumns = @JoinColumn(name = "idUtilisateur"),
-            inverseJoinColumns = @JoinColumn(name = "idConversation")
-    )
-    private List<Conversation> conversationCollection;
+    @Column(name = "dateCreation", updatable = false)
+    private LocalDateTime dateCreation;
 
+    @Column(columnDefinition = "LONGTEXT")
+    private String bio;
+
+    @Column(columnDefinition = "LONGTEXT")
+    private String photo;
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.dateCreation == null) {
+            this.dateCreation = LocalDateTime.now();
+        }
+    }
+
+    // ===== RELATIONS =====
+
+
+    @JsonIgnore
     @OneToMany(mappedBy = "idUtilisateur", cascade = CascadeType.ALL)
     private List<Notification> notificationCollection;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "idAgriculteur", cascade = CascadeType.ALL)
     private List<Produit> produitCollection;
 
     @OneToOne(mappedBy = "idAgriculteur")
     private IndiceFiabilite indiceFiabilite;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "idDistributeur", cascade = CascadeType.ALL)
     private List<Commande> commandeCollection;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "idDistributeur", cascade = CascadeType.ALL)
     private List<Commentaire> commentaireCollection;
 
@@ -131,13 +147,31 @@ public class Utilisateur implements Serializable {
         this.role = role;
     }
 
-    public List<Conversation> getConversationCollection() {
-        return conversationCollection;
+    public LocalDateTime getDateCreation() {
+        return dateCreation;
     }
 
-    public void setConversationCollection(List<Conversation> conversationCollection) {
-        this.conversationCollection = conversationCollection;
+    public void setDateCreation(LocalDateTime dateCreation) {
+        this.dateCreation = dateCreation;
     }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+
 
     public List<Notification> getNotificationCollection() {
         return notificationCollection;

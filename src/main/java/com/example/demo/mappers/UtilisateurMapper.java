@@ -7,11 +7,9 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring", uses = MapperUtils.class)
 public interface UtilisateurMapper {
 
-    static UtilisateurDTO toDTO(Utilisateur entity) {
-        return null;
-    }
+    @org.mapstruct.Mapping(target = "reliabilityScore", expression = "java(entity.getIndiceFiabilite() != null ? entity.getIndiceFiabilite().getTauxCommande() : 4.8)")
+    UtilisateurDTO toDTO(Utilisateur entity);
 
-    static Utilisateur toEntity(UtilisateurDTO dto) {
-        return null;
-    }
+    @org.mapstruct.Mapping(target = "dateCreation", ignore = true)
+    Utilisateur toEntity(UtilisateurDTO dto);
 }

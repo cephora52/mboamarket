@@ -9,7 +9,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/previsions")
-@RequiredArgsConstructor
 public class PrevisionRecolteController {
 
     private final PrevisionRecolteInterface service;

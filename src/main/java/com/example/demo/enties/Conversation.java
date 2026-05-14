@@ -18,20 +18,29 @@ public class Conversation implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
     @Column(name = "idConversation")
     private Integer idConversation;
+
     @Column(name = "dateCreation")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreation;
-    @ManyToMany(mappedBy = "conversationCollection")
-    private List<Utilisateur> utilisateurCollection;
+
+    @ManyToOne
+    @JoinColumn(name = "idUser1")
+    private Utilisateur user1;
+
+    @ManyToOne
+    @JoinColumn(name = "idUser2")
+    private Utilisateur user2;
 
     public Conversation() {
+        this.dateCreation = new Date();
     }
 
-    public Conversation(Integer idConversation) {
-        this.idConversation = idConversation;
+    public Conversation(Utilisateur user1, Utilisateur user2) {
+        this.user1 = user1;
+        this.user2 = user2;
+        this.dateCreation = new Date();
     }
 
     public Integer getIdConversation() {
@@ -50,12 +59,20 @@ public class Conversation implements Serializable {
         this.dateCreation = dateCreation;
     }
 
-    public List<Utilisateur> getUtilisateurCollection() {
-        return utilisateurCollection;
+    public Utilisateur getUser1() {
+        return user1;
     }
 
-    public void setUtilisateurCollection(List<Utilisateur> utilisateurCollection) {
-        this.utilisateurCollection = utilisateurCollection;
+    public void setUser1(Utilisateur user1) {
+        this.user1 = user1;
+    }
+
+    public Utilisateur getUser2() {
+        return user2;
+    }
+
+    public void setUser2(Utilisateur user2) {
+        this.user2 = user2;
     }
 
     @Override
@@ -83,4 +100,6 @@ public class Conversation implements Serializable {
         return "com.mycompany.mboamarket.Conversation[ idConversation=" + idConversation + " ]";
     }
 
+    public void setUtilisateurCollection(List<Utilisateur> users) {
+    }
 }

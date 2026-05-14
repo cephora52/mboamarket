@@ -14,6 +14,13 @@ public class UtilisateurDTO {
     private String password;
 
     private Role role;
+    private String dateCreation;
+    private Double reliabilityScore;
+    private String bio;
+    private String photo;
+
+
+
 
     // ===== CONSTRUCTEURS =====
 
@@ -21,7 +28,10 @@ public class UtilisateurDTO {
     }
 
     public UtilisateurDTO(Integer idUtilisateur, String nom, String telephone, String ville,
-                          String email, String password, Role role) {
+                          String email, String password, Role role, String dateCreation, Double reliabilityScore, String bio, String photo) {
+
+
+
         this.idUtilisateur = idUtilisateur;
         this.nom = nom;
         this.telephone = telephone;
@@ -29,7 +39,13 @@ public class UtilisateurDTO {
         this.email = email;
         this.password = password;
         this.role = role;
+        this.dateCreation = dateCreation;
+        this.reliabilityScore = reliabilityScore;
+        this.bio = bio;
+        this.photo = photo;
     }
+
+
 
     // ===== GETTERS & SETTERS =====
 
@@ -88,4 +104,38 @@ public class UtilisateurDTO {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    public String getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(String dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public Double getReliabilityScore() {
+        return reliabilityScore;
+    }
+
+    public void setReliabilityScore(Double reliabilityScore) {
+        this.reliabilityScore = reliabilityScore;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
 }
+
+
