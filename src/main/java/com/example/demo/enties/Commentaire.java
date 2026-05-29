@@ -22,6 +22,9 @@ public class Commentaire implements Serializable {
     @Lob
     @Column(name = "contenu")
     private String contenu;
+    @Column(name = "dateCommentaire")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCommentaire;
     @JoinColumn(name = "idProduit", referencedColumnName = "idProduit")
     @ManyToOne(optional = false)
     private Produit idProduit;
@@ -99,9 +102,10 @@ public class Commentaire implements Serializable {
     }
 
     public Date getDateCommentaire() {
-        return null;
+        return dateCommentaire;
     }
 
     public void setDateCommentaire(Date dateCommentaire) {
+        this.dateCommentaire = dateCommentaire;
     }
 }

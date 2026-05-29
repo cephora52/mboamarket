@@ -22,16 +22,19 @@ public class MessageService implements MessageInterface {
     private final ConversationRepos conversationRepos;
     private final UtilisateurRepos utilisateurRepos;
     private final MessageMapper mapper;
+    private final NotificationService notificationService;
 
     public MessageService(MessageRepos messageRepos,
                           ConversationRepos conversationRepos,
                           UtilisateurRepos utilisateurRepos,
-                          MessageMapper mapper) {
+                          MessageMapper mapper,
+                          NotificationService notificationService) {
 
         this.messageRepos = messageRepos;
         this.conversationRepos = conversationRepos;
         this.utilisateurRepos = utilisateurRepos;
         this.mapper = mapper;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -75,6 +78,17 @@ public class MessageService implements MessageInterface {
             
             MessageDTO result = mapper.toDTO(saved);
             System.out.println("MboaMarket: OK - DTO généré: " + result.getContenu() + " (ID Conv: " + result.getIdConversation() + ")");
+
+            // Notify recipient about new message
+            String contenuCourt = saved.getContenu().length() > 50
+                    ? saved.getContenu().substring(0, 50) + "..."
+                    : saved.getContenu();
+            notificationService.create(
+                    dto.getIdDestinataire(),
+                    "Nouveau message de " + sender.getNom(),
+                    contenuCourt
+            );
+
             return result;
         } catch (Exception e) {
             System.err.println("MboaMarket: ERREUR CRITIQUE lors de l'envoi du message: " + e.getMessage());

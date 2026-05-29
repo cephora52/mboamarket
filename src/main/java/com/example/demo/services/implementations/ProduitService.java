@@ -11,9 +11,7 @@ import com.example.demo.mappers.ProduitMapper;
 import com.example.demo.repositories.CategorieRepos;
 import com.example.demo.repositories.ProduitRepos;
 import com.example.demo.repositories.UtilisateurRepos;
-import com.example.demo.repositories.CommandeRepos;
 import com.example.demo.services.interfaces.ProduitInterface;
-import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -25,7 +23,6 @@ public class ProduitService implements ProduitInterface {
     private final ProduitRepos produitRepos;
     private final CategorieRepos categorieRepos;
     private final UtilisateurRepos utilisateurRepos;
-    private final CommandeRepos commandeRepos;
     private final ProduitMapper mapper;
 
     @Override
@@ -111,11 +108,10 @@ public class ProduitService implements ProduitInterface {
         produitRepos.deleteById(id);
     }
 
-    public ProduitService(ProduitRepos produitRepos, CategorieRepos categorieRepos, UtilisateurRepos utilisateurRepos, CommandeRepos commandeRepos, ProduitMapper mapper) {
+    public ProduitService(ProduitRepos produitRepos, CategorieRepos categorieRepos, UtilisateurRepos utilisateurRepos, ProduitMapper mapper) {
         this.produitRepos = produitRepos;
         this.categorieRepos = categorieRepos;
         this.utilisateurRepos = utilisateurRepos;
-        this.commandeRepos = commandeRepos;
         this.mapper = mapper;
     }
 }

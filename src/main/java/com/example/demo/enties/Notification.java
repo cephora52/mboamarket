@@ -24,6 +24,8 @@ public class Notification implements Serializable {
     @Lob
     @Column(name = "contenuNotification")
     private String contenuNotification;
+    @Column(name = "titre")
+    private String titre;
     @Column(name = "dateNotification")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateNotification;
@@ -59,6 +61,14 @@ public class Notification implements Serializable {
 
     public void setContenuNotification(String contenuNotification) {
         this.contenuNotification = contenuNotification;
+    }
+
+    public String getTitre() {
+        return titre;
+    }
+
+    public void setTitre(String titre) {
+        this.titre = titre;
     }
 
     public Date getDateNotification() {

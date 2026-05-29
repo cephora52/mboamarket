@@ -12,6 +12,6 @@ public class PrevisionRecolteDTO {
     public Integer idAgriculteur;
 
     public Integer getIdPrevision() {
-        return null;
+        return idPrevision;
     }
 }

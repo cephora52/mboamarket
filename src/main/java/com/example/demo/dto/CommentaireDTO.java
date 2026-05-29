@@ -65,9 +65,10 @@ public class CommentaireDTO {
     }
 
     public void setIdDistributeur(Integer idUtilisateur) {
+        this.idUtilisateur = idUtilisateur;
     }
 
     public Integer getIdDistributeur() {
-        return null;
+        return idUtilisateur;
     }
 }

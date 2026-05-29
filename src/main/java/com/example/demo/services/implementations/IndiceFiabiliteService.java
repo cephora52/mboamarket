@@ -34,7 +34,7 @@ public class IndiceFiabiliteService implements IndiceFiabiliteInterface {
         if (taux == null || regularite == null) return "FAIBLE";
 
         if (taux >= 70 && regularite >= 60)
-            return "FIABLE";
+            return "ELEVE";
 
         if (taux >= 40)
             return "MOYEN";

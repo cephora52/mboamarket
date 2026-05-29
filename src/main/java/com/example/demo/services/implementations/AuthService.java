@@ -52,14 +52,18 @@ public class AuthService {
     // ===== LOGIN =====
     public AuthResponse login(AuthRequest request) {
 
-        Utilisateur user = utilisateurRepos.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        Utilisateur user = utilisateurRepos.findByEmail(request.getEmail()).orElse(null);
+        if (user == null) {
+            user = utilisateurRepos.findByTelephone(request.getEmail()).orElse(null);
+        }
+        if (user == null) {
+            throw new RuntimeException("Utilisateur non trouvé");
+        }
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Mot de passe incorrect");
         }
 
-        //  ID, NOM, EMAIL RETOURNÉS
         return new AuthResponse("Connexion réussie", user.getRole().name(), user.getIdUtilisateur(), user.getNom(), user.getEmail());
     }
 }

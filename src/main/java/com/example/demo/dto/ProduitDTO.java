@@ -8,8 +8,8 @@ public class ProduitDTO {
 
     private Integer idProduit;
     private String nomProduit;
-    private int qteProduit;
-    private double prix;
+    private Integer qteProduit;
+    private Double prix;
     private Date datePublication;
     private StatutProduit statutProduit;
     private String photo;
@@ -29,11 +29,11 @@ public class ProduitDTO {
     public String getNomProduit() { return nomProduit; }
     public void setNomProduit(String nomProduit) { this.nomProduit = nomProduit; }
 
-    public int getQteProduit() { return qteProduit; }
-    public void setQteProduit(int qteProduit) { this.qteProduit = qteProduit; }
+    public Integer getQteProduit() { return qteProduit; }
+    public void setQteProduit(Integer qteProduit) { this.qteProduit = qteProduit; }
 
-    public double getPrix() { return prix; }
-    public void setPrix(double prix) { this.prix = prix; }
+    public Double getPrix() { return prix; }
+    public void setPrix(Double prix) { this.prix = prix; }
 
     public Date getDatePublication() { return datePublication; }
     public void setDatePublication(Date datePublication) { this.datePublication = datePublication; }

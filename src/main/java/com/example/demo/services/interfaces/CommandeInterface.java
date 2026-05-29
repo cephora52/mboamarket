@@ -20,5 +20,13 @@ public interface CommandeInterface {
 
     List<CommandeDTO> payerPanier(CheckoutRequestDTO dto);
 
+    CommandeDTO updateStatus(Integer id, String status);
+
+    CommandeDTO preparerLivraison(Integer id);
+
+    CommandeDTO demanderConfirmation(Integer id);
+
+    CommandeDTO validerParAgriculteur(Integer id);
+
     void delete(Integer id);
 }

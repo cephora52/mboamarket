@@ -13,6 +13,8 @@ public class CommandeDTO {
     private Integer idAgriculteur;
     private String nomAgriculteur;
     private String nomDistributeur;
+    private String codeConfirmation;
+    private Integer quantiteLivree;
     private java.util.List<CommandeProduitDTO> items;
 
     public CommandeDTO() {
@@ -102,6 +104,22 @@ public class CommandeDTO {
 
     public void setNomDistributeur(String nomDistributeur) {
         this.nomDistributeur = nomDistributeur;
+    }
+
+    public String getCodeConfirmation() {
+        return codeConfirmation;
+    }
+
+    public void setCodeConfirmation(String codeConfirmation) {
+        this.codeConfirmation = codeConfirmation;
+    }
+
+    public Integer getQuantiteLivree() {
+        return quantiteLivree;
+    }
+
+    public void setQuantiteLivree(Integer quantiteLivree) {
+        this.quantiteLivree = quantiteLivree;
     }
 }
 

@@ -3,9 +3,12 @@ package com.example.demo.controllers;
 import com.example.demo.dto.CheckoutRequestDTO;
 import com.example.demo.dto.CommandeDTO;
 import com.example.demo.services.interfaces.CommandeInterface;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/commandes")
@@ -53,8 +56,36 @@ public class CommandeController {
         return service.payerPanier(dto);
     }
 
+    @PutMapping("/{id}/status")
+    public CommandeDTO updateStatus(@PathVariable Integer id,
+                                    @RequestBody String status) {
+        return service.updateStatus(id, status);
+    }
+
+    @PutMapping("/{id}/preparer")
+    public CommandeDTO preparerLivraison(@PathVariable Integer id) {
+        return service.preparerLivraison(id);
+    }
+
+    @PutMapping("/{id}/demander-confirmation")
+    public CommandeDTO demanderConfirmation(@PathVariable Integer id) {
+        return service.demanderConfirmation(id);
+    }
+
+    @PutMapping("/{id}/valider-agriculteur")
+    public CommandeDTO validerParAgriculteur(@PathVariable Integer id) {
+        return service.validerParAgriculteur(id);
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id) {
         service.delete(id);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handleAllErrors(Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", e.getMessage() != null ? e.getMessage() : "Erreur interne"));
     }
 }

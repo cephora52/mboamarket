@@ -24,6 +24,12 @@ public class Commande implements Serializable {
     @Column(name = "statutCmd")
     private StatutCommande statutCmd;
 
+    @Column(name = "codeConfirmation")
+    private String codeConfirmation;
+
+    @Column(name = "quantiteLivree")
+    private Integer quantiteLivree;
+
     @OneToMany(mappedBy = "commande")
     private List<CommandeProduit> commandeProduitCollection;
 
@@ -86,6 +92,22 @@ public class Commande implements Serializable {
 
     public void setStatutCmd(StatutCommande statutCmd) {
         this.statutCmd = statutCmd;
+    }
+
+    public String getCodeConfirmation() {
+        return codeConfirmation;
+    }
+
+    public void setCodeConfirmation(String codeConfirmation) {
+        this.codeConfirmation = codeConfirmation;
+    }
+
+    public Integer getQuantiteLivree() {
+        return quantiteLivree;
+    }
+
+    public void setQuantiteLivree(Integer quantiteLivree) {
+        this.quantiteLivree = quantiteLivree;
     }
 
     public List<CommandeProduit> getCommandeProduitCollection() {
