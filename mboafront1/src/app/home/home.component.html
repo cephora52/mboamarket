@@ -1,0 +1,359 @@
+<div class="min-h-screen bg-[#fbfbe2]">
+  
+  <!-- NAVBAR -->
+  <app-navbar></app-navbar>
+
+  <!-- ================= HERO ================= -->
+  <section class="relative overflow-hidden">
+    <div class="max-w-[1400px] mx-auto px-6 pt-16 pb-24 lg:pt-24 lg:pb-32">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        
+        <!-- Left -->
+        <div class="space-y-8 animate-[fadeInScale_0.6s_ease-out]">
+          <span class="inline-flex items-center gap-2 bg-green-100 text-green-700 text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-full">
+            <i class="fa-solid fa-spa"></i>
+            Agriculture Directe
+          </span>
+          <h1 class="text-5xl lg:text-7xl font-black leading-[1.05] tracking-tight text-slate-900">
+            Produits frais,
+            <span class="text-green-600">récoltés</span> pour vous.
+          </h1>
+          <p class="text-lg text-slate-500 leading-relaxed max-w-lg font-medium">
+            La première plateforme qui connecte directement agriculteurs et distributeurs pour une chaîne d'approvisionnement plus juste et transparente au Cameroun.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <button routerLink="/all-product-dist"
+                    class="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-500 text-white px-8 py-4 rounded-2xl text-sm font-black hover:from-green-700 hover:to-green-600 shadow-xl shadow-green-500/25 transition-all active:scale-[0.98]">
+              <i class="fa-solid fa-store"></i>
+              Explorer les produits
+              <i class="fa-solid fa-arrow-right text-[12px]"></i>
+            </button>
+            <button [routerLink]="['/login']" [queryParams]="{register: true}"
+                    class="inline-flex items-center gap-2 bg-white border-2 border-slate-200 text-slate-700 px-8 py-4 rounded-2xl text-sm font-black hover:border-green-500 hover:text-green-700 shadow-sm transition-all">
+              <i class="fa-solid fa-user-plus"></i>
+              Créer un compte
+            </button>
+          </div>
+
+          <!-- Trust badges -->
+          <div class="flex items-center gap-8 pt-4">
+            <div class="flex -space-x-2">
+              <div class="w-9 h-9 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 border-2 border-white flex items-center justify-center text-white text-[10px] font-black shadow-sm">MT</div>
+              <div class="w-9 h-9 rounded-full bg-gradient-to-br from-green-400 to-green-600 border-2 border-white flex items-center justify-center text-white text-[10px] font-black shadow-sm">JD</div>
+              <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 border-2 border-white flex items-center justify-center text-white text-[10px] font-black shadow-sm">PK</div>
+              <div class="w-9 h-9 rounded-full bg-white border-2 border-dashed border-slate-300 flex items-center justify-center text-[10px] font-black text-slate-400 shadow-sm">+2k</div>
+            </div>
+            <p class="text-sm font-bold text-slate-500">
+              <span class="text-green-700">200+</span> agriculteurs nous font confiance
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Hero Image -->
+        <div class="relative animate-[fadeInScale_0.6s_ease-out_0.2s_both]">
+          <div class="relative rounded-[3rem] overflow-hidden shadow-2xl">
+            <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80"
+                 class="w-full h-[500px] object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+            <!-- Floating badges -->
+            <div class="absolute bottom-6 left-6 right-6 flex flex-wrap gap-3">
+              <span class="bg-white/90 backdrop-blur px-4 py-2 rounded-xl text-xs font-bold text-slate-700 shadow-lg flex items-center gap-2">
+                <i class="fa-solid fa-check-circle text-green-600"></i> Produits Bio
+              </span>
+              <span class="bg-white/90 backdrop-blur px-4 py-2 rounded-xl text-xs font-bold text-slate-700 shadow-lg flex items-center gap-2">
+                <i class="fa-solid fa-truck text-green-600"></i> Livraison rapide
+              </span>
+            </div>
+          </div>
+          <!-- Stats overlay -->
+          <div class="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl px-6 py-4 hidden lg:block">
+            <p class="text-2xl font-black text-slate-900">98%</p>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-green-600">Clients satisfaits</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STATS BAR ================= -->
+  <section class="bg-white border-y border-slate-100">
+    <div class="max-w-[1400px] mx-auto px-6 py-10">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div class="text-center">
+          <p class="text-3xl font-black text-green-700">200+</p>
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mt-1">Agriculteurs</p>
+        </div>
+        <div class="text-center">
+          <p class="text-3xl font-black text-green-700">500+</p>
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mt-1">Produits</p>
+        </div>
+        <div class="text-center">
+          <p class="text-3xl font-black text-green-700">50+</p>
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mt-1">Villes desservies</p>
+        </div>
+        <div class="text-center">
+          <p class="text-3xl font-black text-green-700">98%</p>
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mt-1">Satisfaction</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CATEGORIES ================= -->
+  <section class="py-24">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="flex items-end justify-between mb-12">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-[0.3em] text-green-600">Catégories</span>
+          <h2 class="text-4xl font-black text-slate-900 mt-2">Explorez nos catégories</h2>
+          <p class="text-slate-500 mt-2 text-sm font-medium">Des produits triés sur le volet pour vous.</p>
+        </div>
+        <a routerLink="/all-product-dist" class="hidden sm:flex items-center gap-2 text-sm font-black text-green-700 hover:text-green-600 transition-colors">
+          Tout voir <i class="fa-solid fa-arrow-right text-[12px]"></i>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
+        <div *ngFor="let cat of categories; let i = index" 
+             [routerLink]="['/all-product-dist']" 
+             [queryParams]="{category: cat.nomCategorie || cat.nom}"
+             class="group relative h-48 rounded-[2rem] overflow-hidden shadow-sm cursor-pointer"
+             [class.animate-fade-in-up]="true"
+             [style.animation-delay]="(i * 0.1) + 's'">
+          <img [src]="getCategoryImage(cat.nomCategorie || cat.nom)"
+               class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent"></div>
+          <div class="absolute bottom-5 left-5 right-5">
+            <h3 class="text-white font-bold text-lg">{{ cat.nomCategorie || cat.nom }}</h3>
+            <p class="text-green-400 text-[10px] uppercase font-black tracking-widest mt-1 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center gap-1">
+              Découvrir <i class="fa-solid fa-arrow-right text-[8px]"></i>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRODUITS VEDETTES ================= -->
+  <section class="py-24 bg-white">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="flex items-end justify-between mb-12">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-[0.3em] text-green-600">Produits</span>
+          <h2 class="text-4xl font-black text-slate-900 mt-2">Produits à la une</h2>
+          <p class="text-slate-500 mt-2 text-sm font-medium">Les meilleurs produits du moment.</p>
+        </div>
+        <a routerLink="/all-product-dist" class="hidden sm:flex items-center gap-2 text-sm font-black text-green-700 hover:text-green-600 transition-colors">
+          Tout voir <i class="fa-solid fa-arrow-right text-[12px]"></i>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5">
+        <div *ngFor="let product of filteredProducts; let i = index" 
+             [routerLink]="['/produit', product.idProduit || product.id]"
+             class="group bg-white rounded-[2rem] p-3 shadow-sm border border-slate-100 hover:shadow-xl hover:border-green-100 transition-all duration-300 cursor-pointer"
+             [class.animate-fade-in-up]="true"
+             [style.animation-delay]="(i * 0.05) + 's'">
+          
+          <div class="relative h-40 rounded-[1.5rem] overflow-hidden mb-4 bg-slate-50">
+            <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                 [src]="product.photo || 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=300&q=80'">
+            
+            <button (click)="toggleFavorite(product, $event)" 
+                    class="absolute top-2.5 right-2.5 w-8 h-8 bg-white/90 backdrop-blur rounded-xl flex items-center justify-center shadow-sm transition-all hover:scale-105"
+                    [class.text-red-500]="isFavorite(product)"
+                    [class.text-slate-400]="!isFavorite(product)">
+              <i class="fa-solid fa-heart text-sm" [class.text-red-500]="isFavorite(product)"></i>
+            </button>
+            
+            <span class="absolute top-2.5 left-2.5 px-2.5 py-1 bg-white/90 backdrop-blur rounded-lg text-[9px] font-black uppercase tracking-wider text-green-700 shadow-sm">
+              {{ getCategoryName(product) || 'Naturel' }}
+            </span>
+          </div>
+
+          <div class="px-1">
+            <h3 class="font-bold text-slate-900 text-sm truncate group-hover:text-green-700 transition-colors">{{ product.nomProduit || product.nom }}</h3>
+            <p class="text-[11px] text-slate-400 font-medium mt-0.5 flex items-center gap-1">
+              <i class="fa-solid fa-location-dot text-[9px]"></i>
+              {{ product.localite || 'Cameroun' }}
+            </p>
+            
+            <div class="pt-3 mt-3 flex items-center justify-between border-t border-slate-50">
+              <span class="font-black text-slate-900">{{ product.prix | number }} <span class="text-[9px] font-bold text-slate-400">FCFA</span></span>
+              <div class="flex gap-1">
+                <button (click)="addToCart(product, $event)" 
+                        class="w-8 h-8 bg-green-600 text-white rounded-xl flex items-center justify-center hover:bg-green-700 transition-all shadow-lg shadow-green-500/20 text-sm">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty state -->
+      <div *ngIf="filteredProducts.length === 0" class="text-center py-24">
+        <i class="fa-solid fa-box-open text-5xl text-slate-200 mb-4"></i>
+        <p class="text-slate-400 font-bold text-lg">De nouveaux produits arrivent bientôt !</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HOW IT WORKS ================= -->
+  <section class="py-24">
+    <div class="max-w-[1400px] mx-auto px-6 text-center">
+      <span class="text-[10px] font-black uppercase tracking-[0.3em] text-green-600">Fonctionnement</span>
+      <h2 class="text-4xl font-black text-slate-900 mt-2 mb-4">Comment ça marche</h2>
+      <p class="text-slate-500 text-sm font-medium max-w-xl mx-auto">Rejoignez MboaMarket en trois étapes simples.</p>
+
+      <div class="grid md:grid-cols-3 gap-8 mt-16">
+        <div class="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-100 text-center">
+          <div class="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <i class="fa-solid fa-user-plus text-2xl text-green-700"></i>
+          </div>
+          <span class="text-[10px] font-black uppercase tracking-wider text-green-600">Étape 1</span>
+          <h3 class="text-lg font-black text-slate-900 mt-2">Créez votre compte</h3>
+          <p class="text-sm text-slate-400 mt-2 leading-relaxed">Inscrivez-vous gratuitement en choisissant votre rôle : agriculteur ou distributeur.</p>
+        </div>
+
+        <div class="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-100 text-center">
+          <div class="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <i class="fa-solid fa-handshake text-2xl text-green-700"></i>
+          </div>
+          <span class="text-[10px] font-black uppercase tracking-wider text-green-600">Étape 2</span>
+          <h3 class="text-lg font-black text-slate-900 mt-2">Connectez-vous</h3>
+          <p class="text-sm text-slate-400 mt-2 leading-relaxed">Les agriculteurs publient leurs produits, les distributeurs parcourent et commandent.</p>
+        </div>
+
+        <div class="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-100 text-center">
+          <div class="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <i class="fa-solid fa-truck-fast text-2xl text-green-700"></i>
+          </div>
+          <span class="text-[10px] font-black uppercase tracking-wider text-green-600">Étape 3</span>
+          <h3 class="text-lg font-black text-slate-900 mt-2">Commercez ensemble</h3>
+          <p class="text-sm text-slate-400 mt-2 leading-relaxed">Finalisez vos transactions en toute confiance et faites prospérer l'agriculture locale.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TESTIMONIAL ================= -->
+  <section class="py-24 bg-white">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="bg-gradient-to-br from-green-900 to-green-800 rounded-[3rem] p-12 lg:p-20 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-green-500/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-green-400/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+        
+        <div class="relative z-10 max-w-3xl mx-auto text-center">
+          <i class="fa-solid fa-quote-left text-4xl text-green-400/50 mb-6"></i>
+          <blockquote class="text-2xl lg:text-3xl font-bold text-white leading-relaxed">
+            "MboaMarket a transformé ma façon de vendre. Je touche désormais des distributeurs de toute la région sans intermédiaire. Mes revenus ont doublé en seulement 3 mois !"
+          </blockquote>
+          <div class="flex items-center justify-center gap-4 mt-10">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 border-2 border-white/30 flex items-center justify-center text-white font-black">MT</div>
+            <div class="text-left">
+              <p class="text-white font-bold">Marie T.</p>
+              <p class="text-green-400 text-sm font-medium">Agricultrice, Bafoussam</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CTA NEWSLETTER ================= -->
+  <section class="py-24">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="bg-white rounded-[3rem] p-12 lg:p-20 shadow-sm border border-slate-100 text-center max-w-3xl mx-auto">
+        <i class="fa-solid fa-envelope-open-text text-4xl text-green-600 mb-6"></i>
+        <h2 class="text-3xl font-black text-slate-900">Restez connecté</h2>
+        <p class="text-slate-500 mt-2 text-sm font-medium max-w-md mx-auto">Recevez les dernières récoltes et offres exclusives directement dans votre boîte mail.</p>
+        <div class="flex gap-3 max-w-md mx-auto mt-8">
+          <input type="email" placeholder="Votre adresse email" 
+                 class="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3.5 text-sm font-medium focus:ring-2 focus:ring-green-500 outline-none transition-all">
+          <button class="bg-gradient-to-r from-green-600 to-green-500 text-white font-black px-8 py-3.5 rounded-2xl hover:from-green-700 hover:to-green-600 shadow-lg shadow-green-500/20 transition-all text-sm">
+            S'abonner
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-900 text-slate-400">
+    <div class="max-w-[1400px] mx-auto px-6 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+        
+        <div class="lg:col-span-2 space-y-6">
+          <div class="flex items-center gap-2">
+            <div class="w-9 h-9 bg-gradient-to-br from-green-500 to-green-700 rounded-xl flex items-center justify-center shadow-lg">
+              <i class="fa-solid fa-leaf text-white text-sm"></i>
+            </div>
+            <span class="text-xl font-black text-white">
+              Mboa<span class="text-green-400">Market</span>
+            </span>
+          </div>
+          <p class="text-sm leading-relaxed text-slate-500 max-w-sm">
+            La marketplace qui révolutionne l'agriculture locale en connectant directement producteurs et commerçants du Cameroun.
+          </p>
+          <div class="flex gap-3">
+            <a href="#" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-green-600 hover:border-green-600 hover:text-white transition-all text-slate-500">
+              <i class="fa-brands fa-facebook-f"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-green-600 hover:border-green-600 hover:text-white transition-all text-slate-500">
+              <i class="fa-brands fa-twitter"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-green-600 hover:border-green-600 hover:text-white transition-all text-slate-500">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-green-600 hover:border-green-600 hover:text-white transition-all text-slate-500">
+              <i class="fa-brands fa-linkedin-in"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="space-y-5">
+          <h3 class="text-white font-bold text-xs uppercase tracking-widest">Navigation</h3>
+          <ul class="space-y-3">
+            <li><a routerLink="/home" class="text-sm font-medium hover:text-green-400 transition-colors">Accueil</a></li>
+            <li><a routerLink="/all-product-dist" class="text-sm font-medium hover:text-green-400 transition-colors">Boutique</a></li>
+            <li><a [routerLink]="['/login']" [queryParams]="{register: true}" class="text-sm font-medium hover:text-green-400 transition-colors">Créer un compte</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-5">
+          <h3 class="text-white font-bold text-xs uppercase tracking-widest">Support</h3>
+          <ul class="space-y-3">
+            <li><a class="text-sm font-medium hover:text-green-400 transition-colors cursor-pointer">Centre d'aide</a></li>
+            <li><a class="text-sm font-medium hover:text-green-400 transition-colors cursor-pointer">Guide d'achat</a></li>
+            <li><a class="text-sm font-medium hover:text-green-400 transition-colors cursor-pointer">Confidentialité</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-5">
+          <h3 class="text-white font-bold text-xs uppercase tracking-widest">Contact</h3>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-2 text-sm font-medium">
+              <i class="fa-solid fa-location-dot text-green-400 text-[10px]"></i>
+              Douala, Cameroun
+            </li>
+            <li class="flex items-center gap-2 text-sm font-medium">
+              <i class="fa-solid fa-envelope text-green-400 text-[10px]"></i>
+              contact&#64;mboamarket.com
+            </li>
+            <li class="flex items-center gap-2 text-sm font-medium">
+              <i class="fa-solid fa-phone text-green-400 text-[10px]"></i>
+              +237 600 000 000
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-white/5 py-8">
+      <p class="text-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">
+        &copy; 2026 MboaMarket. Tous droits réservés.
+      </p>
+    </div>
+  </footer>
+
+</div>

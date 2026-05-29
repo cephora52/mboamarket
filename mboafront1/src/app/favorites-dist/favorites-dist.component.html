@@ -1,0 +1,72 @@
+<div class="bg-[#fbfbe2] text-gray-900 min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
+    <div class="flex items-center justify-between max-w-[1300px] mx-auto px-6 py-4">
+      <!-- LEFT -->
+      <div class="flex items-center gap-6">
+        <h1 class="text-2xl font-extrabold tracking-tight cursor-pointer" routerLink="/home">
+          Mboa<span class="text-green-700">Market</span>
+        </h1>
+        <nav class="hidden lg:flex items-center gap-6 text-sm font-semibold ml-10">
+          <a routerLink="/home" class="text-gray-500 hover:text-green-700 transition">ACCUEIL</a>
+          <a routerLink="/all-product-dist" class="text-gray-500 hover:text-green-700 transition">PRODUITS</a>
+          <a class="text-gray-400 cursor-not-allowed">PRODUCTEURS</a>
+        </nav>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <span routerLink="/favorites" class="material-symbols-outlined text-[24px] cursor-pointer text-green-700 transition">favorite</span>
+        <div class="relative cursor-pointer" routerLink="/panier">
+          <span class="material-symbols-outlined text-[24px] hover:text-green-700 transition">shopping_cart</span>
+          <span *ngIf="cartService.getCartCount() > 0" class="absolute -top-2 -right-2 bg-green-700 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">
+            {{ cartService.getCartCount() }}
+          </span>
+        </div>
+        <span class="material-symbols-outlined text-[24px] cursor-pointer hover:text-green-700 transition">account_circle</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex-grow max-w-[1000px] w-full mx-auto px-6 pt-12 pb-24">
+    <h1 class="text-3xl font-extrabold mb-2 text-gray-800">Mes Favoris</h1>
+    <p class="text-gray-500 text-sm mb-10 w-full md:w-2/3 leading-relaxed">Retrouvez ici les perles de la terre camerounaise que vous avez sélectionnées pour votre distribution.</p>
+
+    <!-- Favorites List -->
+    <div class="flex flex-col gap-3">
+      
+      <!-- List empty state -->
+      <div *ngIf="favorites.length === 0" class="text-center py-16 bg-white rounded-3xl shadow-sm border border-gray-100">
+         <p class="text-gray-500 text-sm font-semibold mb-5">Vous n'avez pas encore de favoris.</p>
+         <button routerLink="/all-product-dist" class="bg-green-700 hover:bg-green-800 px-6 py-2.5 text-white text-sm font-bold rounded-full transition-colors">Explorer les produits</button>
+      </div>
+
+      <!-- ITEM -->
+      <div *ngFor="let fav of favorites; let i = index" class="bg-white rounded-xl p-2 shadow-sm flex items-center pr-4 overflow-hidden relative border border-gray-50 hover:shadow-md transition-shadow">
+        <div class="w-[120px] h-[80px] rounded-lg overflow-hidden relative flex-shrink-0">
+          <img [src]="fav.photo || fav.image || 'https://via.placeholder.com/300'" class="w-full h-full object-cover">
+          <!-- Heart Button to Remove -->
+           <button (click)="removeFromFavorites(fav, $event)" class="absolute top-2 right-2 bg-white w-7 h-7 rounded-full shadow hover:bg-red-50 flex items-center justify-center transition focus:outline-none">
+             <span class="material-symbols-outlined text-red-500 text-[16px]" style="font-variation-settings: 'FILL' 1 !important;">favorite</span>
+           </button>
+        </div>
+
+        <div class="ml-4 flex-1 flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-bold mb-1 text-gray-800 line-clamp-1">{{ fav.nomProduit || fav.nom || fav.name }}</h3>
+            <div class="flex items-center gap-4">
+              <p class="text-green-700 font-bold text-base">{{ fav.prix || fav.price }} <span class="text-[11px] font-semibold text-gray-400">/ {{ fav.unite || 'unité' }}</span></p>
+              <p class="text-[11px] text-gray-500 flex items-center gap-1 font-medium bg-gray-50 px-2 py-0.5 rounded-md border border-gray-100">
+                 <span class="material-symbols-outlined text-[13px]">location_on</span>
+                 {{ fav.localisation || fav.region || fav.localite || 'Cameroun' }}
+              </p>
+            </div>
+          </div>
+          <button [routerLink]="['/produit', fav.id || fav.idProduit]" class="bg-[#0b6424] hover:bg-[#074718] text-white px-4 py-1.5 rounded-full text-xs font-semibold transition shadow-sm cursor-pointer whitespace-nowrap ml-3">
+            Voir le produit
+          </button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>

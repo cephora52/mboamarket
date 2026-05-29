@@ -1,0 +1,57 @@
+.distributor-layout {}
+
+.stat-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+}
+
+.table-card tr {
+    transition: background-color 0.2s;
+}
+
+.table-card tr:hover {
+    background-color: #fafbfc;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Scrollbar styling for a "soft" look */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #fbfbe2;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* Custom table adjustments to fit 6 items without scroll */
+.orders-table td {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+@media (max-height: 900px) {
+    .orders-table td {
+        padding-top: 1.25rem;
+        padding-bottom: 1.25rem;
+    }
+    .content {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+}

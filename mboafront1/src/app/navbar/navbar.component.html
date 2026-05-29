@@ -1,0 +1,171 @@
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-gray-100 shadow-sm">
+  <div class="max-w-[1400px] mx-auto px-6">
+    <div class="flex items-center justify-between h-[72px]">
+
+      <!-- LEFT: Logo + Nav -->
+      <div class="flex items-center gap-10">
+        <a routerLink="/home" class="flex items-center gap-2">
+          <div class="w-9 h-9 bg-gradient-to-br from-green-600 to-green-500 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/20">
+            <i class="fa-solid fa-leaf text-white text-sm"></i>
+          </div>
+          <span class="text-xl font-black tracking-tight">
+            Mboa<span class="text-green-600">Market</span>
+          </span>
+        </a>
+
+        <nav class="hidden lg:flex items-center gap-1">
+          <a routerLink="/home" routerLinkActive="bg-green-50 text-green-700 font-extrabold" [routerLinkActiveOptions]="{exact:true}"
+             class="px-4 py-2 text-sm font-bold text-gray-500 hover:text-green-700 hover:bg-green-50 rounded-xl transition-all">
+            <i class="fa-solid fa-house me-2"></i>Accueil
+          </a>
+          <a routerLink="/all-product-dist" routerLinkActive="bg-green-50 text-green-700 font-extrabold"
+             class="px-4 py-2 text-sm font-bold text-gray-500 hover:text-green-700 hover:bg-green-50 rounded-xl transition-all">
+            <i class="fa-solid fa-store me-2"></i>Boutique
+          </a>
+          <a *ngIf="user" routerLink="/messages" routerLinkActive="bg-green-50 text-green-700 font-extrabold"
+             class="px-4 py-2 text-sm font-bold text-gray-500 hover:text-green-700 hover:bg-green-50 rounded-xl transition-all">
+            <i class="fa-solid fa-message me-2"></i>Messages
+          </a>
+        </nav>
+      </div>
+
+      <!-- SEARCH -->
+      <div class="hidden md:flex relative w-[320px] xl:w-[420px]">
+        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 text-sm"></i>
+        <input class="w-full pl-11 pr-4 py-2.5 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-green-500/30 focus:border-green-500 outline-none text-sm font-medium transition-all"
+               placeholder="Rechercher un produit..."
+               [(ngModel)]="searchTerm"
+               (keyup.enter)="onSearch()">
+      </div>
+
+      <!-- RIGHT -->
+      <div class="flex items-center gap-2">
+
+        <!-- Notifications -->
+        <div class="relative">
+          <button (click)="toggleNotifications()"
+                  class="relative w-10 h-10 rounded-xl hover:bg-gray-50 flex items-center justify-center text-gray-400 hover:text-green-600 transition-all">
+            <i class="fa-regular fa-bell text-lg"></i>
+            <span *ngIf="unreadCount > 0"
+                  class="absolute -top-0.5 -right-0.5 bg-green-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full min-w-[18px] text-center shadow-lg shadow-green-500/30">
+              {{ unreadCount > 9 ? '9+' : unreadCount }}
+            </span>
+          </button>
+
+          <!-- Notifications Dropdown -->
+          <div *ngIf="showNotifications"
+               class="absolute right-0 top-12 w-80 bg-white rounded-2xl shadow-xl border border-slate-100 z-50 overflow-hidden">
+            <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+              <h3 class="text-sm font-black text-slate-800">Notifications</h3>
+              <span class="text-[10px] font-bold text-green-600">{{ unreadCount }} non lue(s)</span>
+            </div>
+            <div class="max-h-72 overflow-y-auto">
+              <div *ngFor="let n of notifications"
+                   (click)="handleNotificationClick(n)"
+                   class="flex items-start gap-3 p-4 border-b border-slate-50 hover:bg-green-50 transition-colors cursor-pointer"
+                   [ngClass]="{'bg-green-50': !n.lu}">
+                <div class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
+                     [ngClass]="{'bg-green-50': !n.lu, 'bg-slate-50': n.lu}">
+                  <span class="material-symbols-outlined text-[16px] text-green-600">notifications_active</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-bold text-slate-800 truncate">{{ n.titre }}</p>
+                  <p class="text-[12px] text-slate-500 mt-0.5 leading-relaxed">{{ n.message }}</p>
+                  <p class="text-[10px] text-slate-400 font-medium mt-1">{{ n.dateNotification | date:'dd/MM/yyyy HH:mm' }}</p>
+                </div>
+                <button (click)="deleteNotification($event, n.idNotification)"
+                        class="text-slate-300 hover:text-red-500 transition-colors shrink-0 mt-1">
+                  <span class="material-symbols-outlined text-[16px]">close</span>
+                </button>
+              </div>
+              <div *ngIf="notifications.length === 0" class="text-center py-8 text-slate-400 text-sm font-medium">
+                <span class="material-symbols-outlined text-3xl block mb-2">notifications_off</span>
+                Aucune notification
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Favorites -->
+        <button routerLink="/favorites"
+                class="relative w-10 h-10 rounded-xl hover:bg-gray-50 flex items-center justify-center text-gray-400 hover:text-green-600 transition-all">
+          <i class="fa-regular fa-heart text-lg"></i>
+        </button>
+
+        <!-- Cart -->
+        <button routerLink="/panier"
+                class="relative w-10 h-10 rounded-xl hover:bg-gray-50 flex items-center justify-center text-gray-400 hover:text-green-600 transition-all">
+          <i class="fa-solid fa-bag-shopping text-lg"></i>
+          <span *ngIf="cartService.getCartCount() > 0"
+                class="absolute -top-0.5 -right-0.5 bg-green-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full min-w-[18px] text-center shadow-lg shadow-green-500/30">
+            {{ cartService.getCartCount() }}
+          </span>
+        </button>
+
+        <!-- Auth -->
+        <ng-container *ngIf="!user; else loggedIn">
+          <div class="h-8 w-px bg-gray-200 mx-1"></div>
+          <button routerLink="/login"
+                  class="px-5 py-2 text-sm font-bold text-gray-600 hover:text-green-700 hover:bg-green-50 rounded-xl transition-all">
+            Connexion
+          </button>
+          <button [routerLink]="['/login']" [queryParams]="{register: true}"
+                  class="px-5 py-2 text-sm font-bold text-white bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 rounded-xl shadow-lg shadow-green-500/20 transition-all">
+            <i class="fa-solid fa-user-plus me-2"></i>S'inscrire
+          </button>
+        </ng-container>
+
+        <ng-template #loggedIn>
+          <div class="h-8 w-px bg-gray-200 mx-1"></div>
+          <div class="group relative">
+            <button class="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-50 transition-all">
+              <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center text-white text-xs font-black shadow-sm">
+                {{ (user?.nom || 'U').charAt(0).toUpperCase() }}
+              </div>
+              <i class="fa-solid fa-chevron-down text-[10px] text-gray-300 group-hover:text-gray-500 transition-all"></i>
+            </button>
+            <div class="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-3 hidden group-hover:block z-50 overflow-hidden">
+              <div class="px-4 py-2">
+                <p class="text-sm font-bold text-gray-900">{{ user?.nom || 'Utilisateur' }}</p>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-gray-400">{{ user?.role === 'AGRICULTEUR' ? 'Agriculteur' : user?.role === 'DISTRIBUTEUR' ? 'Distributeur' : 'Admin' }}</p>
+              </div>
+              <hr class="my-1 border-gray-50">
+              <a *ngIf="user?.role === 'AGRICULTEUR'" routerLink="/farmer"
+                 class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-green-50 hover:text-green-700 transition-all">
+                <i class="fa-solid fa-gauge-high w-4 text-center text-gray-400"></i>
+                Tableau de bord
+              </a>
+              <a *ngIf="user?.role === 'DISTRIBUTEUR'" routerLink="/commande-distributeur"
+                 class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-green-50 hover:text-green-700 transition-all">
+                <i class="fa-solid fa-truck w-4 text-center text-gray-400"></i>
+                Mes commandes
+              </a>
+              <a *ngIf="user?.role === 'AGRICULTEUR'" routerLink="/settings-farmer"
+                 class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-green-50 hover:text-green-700 transition-all">
+                <i class="fa-solid fa-gear w-4 text-center text-gray-400"></i>
+                Paramètres
+              </a>
+              <a *ngIf="user?.role === 'DISTRIBUTEUR'" routerLink="/settings-distributeur"
+                 class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-green-50 hover:text-green-700 transition-all">
+                <i class="fa-solid fa-gear w-4 text-center text-gray-400"></i>
+                Paramètres
+              </a>
+              <hr class="my-1 border-gray-50">
+              <button (click)="logout()"
+                      class="flex items-center gap-3 w-full px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 transition-all">
+                <i class="fa-solid fa-right-from-bracket w-4 text-center"></i>
+                Déconnexion
+              </button>
+            </div>
+          </div>
+        </ng-template>
+
+        <!-- Mobile burger -->
+        <button class="lg:hidden w-10 h-10 rounded-xl hover:bg-gray-50 flex items-center justify-center text-gray-500">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+
+      </div>
+    </div>
+  </div>
+</header>

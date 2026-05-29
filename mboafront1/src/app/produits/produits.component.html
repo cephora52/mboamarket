@@ -1,0 +1,168 @@
+<div class="farmer-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="farmer-sidebar">
+    <div>
+      <div class="logo">
+        <h2>Mboa<span>Market</span></h2>
+        <p>Centre de Marché</p>
+      </div>
+      <nav>
+        <div class="nav-item" routerLink="/farmer">
+          <span class="icon material-symbols-outlined">dashboard</span>
+          <span>Tableau de bord</span>
+        </div>
+        <div class="nav-item active" routerLink="/produits">
+          <span class="icon material-symbols-outlined">inventory_2</span>
+          <span>Produits</span>
+        </div>
+        <div class="nav-item" routerLink="/commande-farmer">
+          <span class="icon material-symbols-outlined">shopping_cart</span>
+          <span>Commandes</span>
+        </div>
+        <div class="nav-item" routerLink="/messages">
+          <span class="icon material-symbols-outlined">chat</span>
+          <span>Messages</span>
+        </div>
+      </nav>
+    </div>
+    <div>
+      <div class="nav-item" routerLink="/settings-farmer">
+        <span class="icon material-symbols-outlined">settings</span>
+        <span>Paramètres</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="farmer-content">
+
+    <!-- TOPBAR -->
+    <header class="farmer-topbar">
+      <div class="search-box">
+        <span class="material-symbols-outlined text-slate-400 text-[20px]">search</span>
+        <input type="text" placeholder="Rechercher un produit, une commande...">
+      </div>
+      <div class="topbar-right">
+        <div class="relative cursor-pointer">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-50 transition-all">
+            <span class="material-symbols-outlined text-slate-500 text-[22px]">notifications</span>
+            <span class="absolute top-1.5 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+          </div>
+        </div>
+        <img [src]="user?.photo || 'https://i.pravatar.cc/40?u=' + user?.nom" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm">
+      </div>
+    </header>
+
+    <!-- HEADER -->
+    <div class="farmer-page-header">
+      <div>
+        <h2>Mes Produits</h2>
+        <p>Gérez votre inventaire et suivez vos stocks en temps réel.</p>
+      </div>
+      <button class="btn-primary" routerLink="/add-product">
+        <span class="material-symbols-outlined text-[18px]">add</span>
+        Ajouter un produit
+      </button>
+    </div>
+
+    <!-- TABLE -->
+    <div class="data-table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Produit</th>
+            <th>Catégorie</th>
+            <th>Quantité</th>
+            <th>Prix</th>
+            <th>Statut</th>
+            <th style="text-align:right;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of produits">
+            <td>
+              <div class="flex items-center gap-4">
+                <img [src]="p.photo || 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=100&h=100&fit=crop'"
+                     class="w-12 h-12 rounded-xl object-cover border border-slate-100">
+                <div>
+                  <span class="font-bold text-sm text-slate-900 block">{{ p.nomProduit || p.nom }}</span>
+                  <span class="text-[11px] text-slate-400 font-medium">{{ p.localite || p.localisation }}</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="badge badge-blue">{{ p.nomCategorie || 'Non définie' }}</span>
+            </td>
+            <td class="font-semibold text-sm text-slate-700">{{ p.qteProduit || p.quantite || 0 }} {{ p.uniteMesure || 'kg' }}</td>
+            <td>
+              <span class="font-extrabold text-green-700">{{ p.prix || 0 }}</span>
+              <span class="text-[10px] text-slate-400 font-semibold ml-1">FCFA</span>
+            </td>
+            <td>
+              <span class="badge"
+                    [class.badge-green]="(p.qteProduit || p.quantite) >= 10"
+                    [class.badge-orange]="(p.qteProduit || p.quantite) < 10 && (p.qteProduit || p.quantite) >= 1"
+                    [class.badge-red]="(p.qteProduit || p.quantite) < 1">
+                <span class="w-1.5 h-1.5 rounded-full inline-block mr-1.5"
+                      [class.bg-green-600]="(p.qteProduit || p.quantite) >= 10"
+                      [class.bg-orange-500]="(p.qteProduit || p.quantite) < 10 && (p.qteProduit || p.quantite) >= 1"
+                      [class.bg-red-500]="(p.qteProduit || p.quantite) < 1">
+                </span>
+                {{ (p.qteProduit || p.quantite) >= 10 ? 'En Stock' : ((p.qteProduit || p.quantite) < 1 ? 'Épuisé' : 'Stock Faible') }}
+              </span>
+            </td>
+            <td style="text-align:right;">
+              <div class="flex items-center justify-end gap-2">
+                <button (click)="editProduct(p.idProduit || p.id)"
+                        class="w-9 h-9 rounded-xl bg-green-50 text-green-700 hover:bg-green-100 transition-all flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[18px]">edit</span>
+                </button>
+                <button (click)="deleteProduct(p.idProduit || p.id)"
+                        class="w-9 h-9 rounded-xl bg-red-50 text-red-500 hover:bg-red-100 transition-all flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[18px]">delete</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="produits.length === 0">
+            <td colspan="6" class="text-center !py-16">
+              <span class="material-symbols-outlined text-4xl text-slate-200 block mb-3">inventory_2</span>
+              <p class="text-slate-400 font-medium">Aucun produit trouvé dans votre inventaire.</p>
+              <button routerLink="/add-product" class="btn-primary mt-4 inline-flex">
+                <span class="material-symbols-outlined text-[16px]">add</span>
+                Ajouter un produit
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="pagination-bar">
+        <p class="info">Affichage de 1 à {{ produits.length }} sur {{ produits.length }} produits</p>
+        <div class="pages">
+          <button class="page-btn active">1</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" *ngIf="productToDelete !== null">
+      <div class="modal-content text-center">
+        <div class="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+          <span class="material-symbols-outlined text-red-500 text-[28px]">delete_forever</span>
+        </div>
+        <h3 class="text-lg font-extrabold text-slate-900 mb-2">Confirmer la suppression</h3>
+        <p class="text-sm text-slate-500 mb-8 leading-relaxed">Voulez-vous vraiment supprimer ce produit ? Cette action est irréversible.</p>
+        <div class="flex gap-3 justify-center">
+          <button class="btn-secondary" (click)="cancelDelete()">Annuler</button>
+          <button class="inline-flex items-center gap-2 bg-red-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-red-700 transition-all shadow-lg shadow-red-600/20" (click)="confirmDelete()">
+            <span class="material-symbols-outlined text-[16px]">delete</span>
+            Supprimer
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>

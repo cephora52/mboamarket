@@ -1,0 +1,292 @@
+<div class="distributor-layout min-h-screen bg-[#fbfbe2] font-sans">
+  
+  <!-- NAVBAR -->
+  <header class="navbar flex items-center justify-between px-10 py-5 bg-[#fbfbe2]">
+    <div class="flex items-center gap-10">
+      <div class="logo flex items-center gap-2" routerLink="/home" style="cursor:pointer">
+        <h1 class="text-xl font-extrabold text-[#1a1a1a]">Mboa<span class="text-[#22c55e]">Market</span></h1>
+      </div>
+      <div class="nav-divider h-6 w-[1.5px] bg-gray-300"></div>
+      
+      <nav class="ml-10 flex gap-10 text-sm font-semibold text-gray-500">
+        <a routerLink="/home" class="hover:text-green-700 transition-colors">Accueil</a>
+        <a routerLink="/commande-distributeur" class="text-green-700 font-extrabold relative">
+          Mes Commandes
+          <span class="absolute -bottom-1 left-0 w-full h-[2.5px] bg-green-600 rounded-full"></span>
+        </a>
+        <a routerLink="/messages" class="hover:text-green-700 cursor-pointer transition-colors">Messages</a>
+        <a routerLink="/all-product-dist" class="hover:text-green-700 cursor-pointer transition-colors">Producteurs</a>
+      </nav>
+    </div>
+
+    <div class="flex items-center gap-6">
+      <!-- Notifications -->
+      <div class="relative">
+        <button (click)="toggleNotifications()" class="relative w-10 h-10 rounded-xl hover:bg-gray-100 flex items-center justify-center transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-gray-600 text-[28px]">notifications</span>
+          <span *ngIf="unreadCount > 0"
+                class="absolute -top-0.5 -right-0.5 bg-green-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full min-w-[18px] text-center shadow-lg shadow-green-500/30">
+            {{ unreadCount > 9 ? '9+' : unreadCount }}
+          </span>
+        </button>
+
+        <!-- Notifications Dropdown -->
+        <div *ngIf="showNotifications"
+             class="absolute right-0 top-12 w-80 bg-white rounded-2xl shadow-xl border border-slate-100 z-50 overflow-hidden">
+          <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+            <h3 class="text-sm font-black text-slate-800">Notifications</h3>
+            <span class="text-[10px] font-bold text-green-600">{{ unreadCount }} non lue(s)</span>
+          </div>
+          <div class="max-h-72 overflow-y-auto">
+            <div *ngFor="let n of notifications"
+                 (click)="handleNotificationClick(n)"
+                 class="flex items-start gap-3 p-4 border-b border-slate-50 hover:bg-green-50 transition-colors cursor-pointer"
+                 [ngClass]="{'bg-green-50': !n.lu}">
+              <div class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
+                   [ngClass]="{'bg-green-50': !n.lu, 'bg-slate-50': n.lu}">
+                <span class="material-symbols-outlined text-[16px] text-green-600">notifications_active</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-bold text-slate-800 truncate">{{ n.titre }}</p>
+                <p class="text-[12px] text-slate-500 mt-0.5 leading-relaxed">{{ n.message }}</p>
+                <p class="text-[10px] text-slate-400 font-medium mt-1">{{ n.dateNotification | date:'dd/MM/yyyy HH:mm' }}</p>
+              </div>
+              <button (click)="deleteNotification($event, n.idNotification)"
+                      class="text-slate-300 hover:text-red-500 transition-colors shrink-0 mt-1">
+                <span class="material-symbols-outlined text-[16px]">close</span>
+              </button>
+            </div>
+            <div *ngIf="notifications.length === 0" class="text-center py-8 text-slate-400 text-sm font-medium">
+              <span class="material-symbols-outlined text-3xl block mb-2">notifications_off</span>
+              Aucune notification
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Menu -->
+      <div class="relative group">
+        <button class="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-100 transition-all cursor-pointer">
+          <img [src]="user?.photo || 'https://i.pravatar.cc/40?u=' + user?.nom" alt="User" class="w-10 h-10 rounded-full border-2 border-green-600 object-cover">
+          <span class="material-symbols-outlined text-gray-400 text-[18px]">expand_more</span>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div class="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-3 hidden group-hover:block z-50 overflow-hidden">
+          <!-- User Info -->
+          <div class="px-4 py-3 border-b border-gray-100">
+            <p class="text-sm font-bold text-gray-900">{{ user?.nom || 'Utilisateur' }}</p>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Distributeur</p>
+            <p class="text-[10px] text-gray-500 mt-1">{{ user?.email }}</p>
+          </div>
+
+          <!-- Menu Items -->
+          <a routerLink="/home"
+             class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-green-50 hover:text-green-700 transition-all">
+            <span class="material-symbols-outlined text-gray-400 w-4 text-center">home</span>
+            Accueil
+          </a>
+          <a routerLink="/commande-distributeur"
+             class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-green-50 hover:text-green-700 transition-all">
+            <span class="material-symbols-outlined text-gray-400 w-4 text-center">shopping_cart</span>
+            Mes Commandes
+          </a>
+          <a routerLink="/edit-profile-distributeur"
+             class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-green-50 hover:text-green-700 transition-all">
+            <span class="material-symbols-outlined text-gray-400 w-4 text-center">person</span>
+            Profil
+          </a>
+          <a routerLink="/settings-distributeur"
+             class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-green-50 hover:text-green-700 transition-all">
+            <span class="material-symbols-outlined text-gray-400 w-4 text-center">settings</span>
+            Paramètres
+          </a>
+
+          <hr class="my-2 border-gray-100">
+
+          <a (click)="logout()"
+             class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 transition-all cursor-pointer">
+            <span class="material-symbols-outlined w-4 text-center">logout</span>
+            Déconnexion
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="content px-10 py-12 max-w-[1400px] mx-auto">
+    
+    <!-- HEADER TITLE -->
+    <div class="flex items-center justify-between mb-8">
+      <div class="title-section">
+        <h2 class="text-3xl font-extrabold text-[#1a1a1a] leading-tight tracking-tight">Historique des Commandes</h2>
+        <p class="text-gray-500 mt-1 text-sm">Gérez et suivez vos approvisionnements en direct du domaine.</p>
+      </div>
+
+      <div class="actions flex gap-3 items-center">
+        <div class="search-box relative">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">search</span>
+          <input type="text" placeholder="Rechercher..." class="pl-10 pr-4 py-2.5 w-[200px] bg-gray-100 rounded-xl border-none focus:ring-2 focus:ring-green-500 shadow-sm text-xs">
+        </div>
+        <button routerLink="/panier" class="flex items-center gap-2 bg-[#22c55e] text-white px-5 py-2.5 rounded-xl font-bold hover:bg-green-700 transition-all shadow-md text-xs">
+          <span class="material-symbols-outlined text-sm">add</span>
+          Nouvelle Commande
+        </button>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid flex gap-5 mb-8">
+      <div class="stat-card bg-white p-5 rounded-3xl shadow-sm flex-1 border border-gray-100">
+        <p class="text-gray-400 text-[10px] font-bold tracking-wider mb-2">TOTAL DÉPENSES (MOIS)</p>
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl font-black text-[#1a1a1a]">{{ totalExpenses | number:'1.0-0' }}</span>
+          <span class="text-sm font-extrabold text-[#22c55e]">FCFA</span>
+        </div>
+
+      </div>
+
+      <div class="stat-card bg-[#22c55e] p-5 rounded-3xl shadow-sm flex-1 text-white relative overflow-hidden">
+        <div class="relative z-10">
+          <p class="text-white/80 text-[10px] font-bold tracking-wider mb-2 uppercase">Toutes les commandes</p>
+          <div class="flex items-baseline gap-2">
+            <span class="text-3xl font-black">{{ deliveryCount }}</span>
+            <span class="text-sm font-bold text-white/90">Livraisons</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE AREA -->
+    <div class="table-card bg-white rounded-[40px] p-10 shadow-sm border border-gray-100">
+        <table class="w-full text-left">
+            <thead>
+                <tr class="text-gray-400 text-[11px] font-black uppercase tracking-widest border-b border-gray-50">
+                    <th class="pb-6 pl-2">Produit</th>
+                    <th class="pb-6">Date d'achat</th>
+                    <th class="pb-6">Producteur</th>
+                    <th class="pb-6">Quantité</th>
+                    <th class="pb-6">Total (FCFA)</th>
+                    <th class="pb-6">Statut</th>
+                    <th class="pb-6 text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let order of orders" class="group border-b border-gray-50 last:border-none">
+                    <td class="py-8">
+                        <div class="flex items-center gap-6">
+                            <div class="w-16 h-16 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 shadow-sm">
+                                <img [src]="order.photo" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-[#1a1a1a] text-lg">{{ order.product }}</h4>
+                                <p class="text-gray-400 text-xs mt-1">ID: {{ order.id }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="font-bold text-gray-700">{{ order.date }}</td>
+                    <td>
+                        <div class="flex items-center gap-3 text-gray-700 font-bold">
+                            <span class="material-symbols-outlined text-green-600 text-[20px]">person</span>
+                            {{ order.producer }}
+                        </div>
+                    </td>
+                    <td>
+                        <span class="bg-gray-100 px-4 py-2 rounded-xl text-sm font-black text-gray-700">{{ order.quantity }}</span>
+                    </td>
+                    <td class="font-black text-[#1a1a1a] text-lg tracking-tight">
+                      <span *ngIf="order.statut !== 'LIVREE' && order.statut !== 'ANNULEE'" class="text-gray-300 text-xl tracking-[0.15em] font-black">••••••</span>
+                      <span *ngIf="order.statut === 'LIVREE' || order.statut === 'ANNULEE'" class="text-[#1a1a1a]">{{ order.total }} FCFA</span>
+                    </td>
+                    <td>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-bold tracking-wide whitespace-nowrap"
+                              [ngClass]="{
+                                'bg-amber-50 text-amber-700': order.statut === 'ENCOURS',
+                                'bg-green-50 text-green-700': order.statut === 'CONFIRMEE',
+                                'bg-purple-50 text-purple-700': order.statut === 'ATTENTE_CONFIRMATION',
+                                'bg-blue-50 text-blue-700': order.statut === 'LIVREE',
+                                'bg-red-50 text-red-700': order.statut === 'ANNULEE'
+                              }">
+                          <span class="w-1.5 h-1.5 rounded-full"
+                                [ngClass]="{
+                                  'bg-amber-500': order.statut === 'ENCOURS',
+                                  'bg-green-500': order.statut === 'CONFIRMEE',
+                                  'bg-purple-500': order.statut === 'ATTENTE_CONFIRMATION',
+                                  'bg-blue-500': order.statut === 'LIVREE',
+                                  'bg-red-500': order.statut === 'ANNULEE'
+                                }"></span>
+                          {{ order.statut === 'ENCOURS' ? 'En cours' : order.statut === 'CONFIRMEE' ? 'Confirmée' : order.statut === 'ATTENTE_CONFIRMATION' ? 'En attente' : order.statut === 'LIVREE' ? 'Livrée' : 'Annulée' }}
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <div class="flex items-center justify-center gap-2">
+                          <button *ngIf="order.statut === 'ENCOURS'" (click)="demanderConfirmation(order)"
+                                  class="flex items-center gap-1.5 bg-purple-600 text-white px-4 py-2.5 rounded-xl font-bold text-xs hover:bg-purple-700 transition-all shadow-sm"
+                                  title="Demander la confirmation à l'agriculteur">
+                            <span class="material-symbols-outlined text-[14px]">how_to_reg</span>
+                            Demander confirmation
+                          </button>
+                          <button (click)="contactProducer(order)"
+                                  class="flex items-center gap-1.5 bg-[#22c55e] text-white px-4 py-2.5 rounded-xl font-bold text-xs hover:bg-green-700 transition-all shadow-sm"
+                                  title="Contacter le producteur">
+                            <span class="material-symbols-outlined text-[14px]">chat</span>
+                            Message
+                          </button>
+                          <button (click)="downloadReceipt(order)"
+                                  class="w-9 h-9 rounded-xl bg-[#f2f8f5] text-[#22c55e] hover:bg-[#22c55e] hover:text-white transition-all inline-flex items-center justify-center"
+                                  title="Télécharger le reçu">
+                              <span class="material-symbols-outlined text-[18px]">download</span>
+                          </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- PAGINATION -->
+        <div class="flex items-center justify-between mt-12 pt-8 border-t border-gray-50">
+            <p class="text-gray-400 text-[11px] font-bold uppercase tracking-widest">Affichage de 1-{{ orders.length }} sur 128 transactions</p>
+            
+            <div class="flex items-center gap-4">
+                <button class="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-400 hover:bg-gray-50">
+                    <span class="material-symbols-outlined">chevron_left</span>
+                </button>
+                <div class="flex items-center gap-2">
+                    <button class="w-10 h-10 rounded-full bg-[#14532d] text-white font-bold text-sm">1</button>
+                    <button class="w-10 h-10 rounded-full hover:bg-gray-50 text-gray-600 font-bold text-sm">2</button>
+                    <button class="w-10 h-10 rounded-full hover:bg-gray-50 text-gray-600 font-bold text-sm">3</button>
+                </div>
+                <button class="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-400 hover:bg-gray-50">
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </button>
+            </div>
+        </div>
+    </div>
+  </main>
+</div>
+
+<!-- TOAST ERROR -->
+<div class="fixed top-6 left-1/2 -translate-x-1/2 z-[9999] transition-all duration-300" *ngIf="confirmError" style="pointer-events: none;">
+  <div class="bg-red-600 text-white px-6 py-4 rounded-2xl shadow-2xl text-sm font-bold flex items-center gap-3 min-w-[320px]" style="pointer-events: auto;">
+    <span class="material-symbols-outlined text-[20px]">error</span>
+    <span>{{ confirmError }}</span>
+    <button (click)="confirmError = ''" class="ml-auto text-white/60 hover:text-white cursor-pointer">
+      <span class="material-symbols-outlined text-[18px]">close</span>
+    </button>
+  </div>
+</div>
+
+<!-- LOADING OVERLAY -->
+<div class="modal-overlay" *ngIf="showConfirmLoading">
+  <div class="modal-content" style="max-width: 360px;">
+    <div class="text-center">
+      <div class="w-16 h-16 bg-purple-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <span class="material-symbols-outlined text-purple-600 text-[32px]">hourglass_top</span>
+      </div>
+      <h3 class="text-lg font-black text-slate-900 mb-2">Demande en cours...</h3>
+      <p class="text-sm text-slate-400 font-medium mb-4">
+        Envoi de la demande de confirmation à <strong>{{ selectedOrder?.producer }}</strong>
+      </p>
+    </div>
+  </div>
+</div>

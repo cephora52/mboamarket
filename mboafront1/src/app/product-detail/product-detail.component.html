@@ -1,0 +1,147 @@
+<div class="bg-[#fbfbe2] text-gray-900 min-h-screen flex flex-col">
+
+  <app-navbar></app-navbar>
+
+  <!-- LOADING -->
+  <div *ngIf="loading" class="flex-grow flex items-center justify-center">
+    <div class="animate-spin rounded-full h-12 w-12 border-4 border-green-700 border-t-transparent"></div>
+  </div>
+
+  <!-- MAIN -->
+  <div *ngIf="!loading && product" class="flex-grow max-w-[1200px] w-full mx-auto px-6 py-8">
+    
+    <!-- Breadcrumb -->
+    <div class="text-[13px] text-gray-500 mb-6 font-medium">
+      <a routerLink="/home" class="hover:text-green-700">Accueil</a> &rsaquo; 
+      <a routerLink="/all-product-dist" class="hover:text-green-700">Produits</a> &rsaquo; 
+      <span class="text-gray-800 font-semibold">{{ product.nomProduit || product.nom || product.name }}</span>
+    </div>
+
+    <!-- MAIN CARD -->
+    <div class="flex flex-col md:flex-row gap-12 bg-white rounded-[24px] p-8 shadow-sm">
+      
+      <!-- LEFT IMAGE -->
+      <div class="flex-1">
+        <img [src]="product.photo || product.image || 'https://via.placeholder.com/600'" class="w-full h-[350px] md:h-[450px] object-cover rounded-[20px]">
+        
+        <div class="flex gap-3 mt-4">
+          <img [src]="product.photo || product.image || 'https://via.placeholder.com/100'" class="w-[80px] h-[60px] rounded-xl object-cover border-2 border-green-600 cursor-pointer">
+          <img [src]="product.photo || product.image || 'https://via.placeholder.com/100'" class="w-[80px] h-[60px] rounded-xl object-cover opacity-60 hover:opacity-100 border-2 border-transparent cursor-pointer transition">
+          <img src="https://via.placeholder.com/100" class="w-[80px] h-[60px] rounded-xl object-cover opacity-60 hover:opacity-100 border-2 border-transparent cursor-pointer transition">
+        </div>
+      </div>
+
+      <!-- RIGHT INFO -->
+      <div class="flex-1 flex flex-col justify-center">
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-2">{{ product.nomProduit || product.nom || product.name || 'Produit Sans Nom' }}</h1>
+        
+        <div class="text-3xl font-bold text-green-700 my-2 tracking-tight">
+          {{ product.prix || product.price || 0 }} FCFA <span class="text-base text-gray-500 font-normal ml-1">/ {{ product.unite || 'unité' }}</span>
+        </div>
+
+        <div class="mb-4">
+          <span *ngIf="(product.quantiteStock || product.stock || 0) == 0" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 text-red-600 font-bold text-xs uppercase">
+            <span class="material-symbols-outlined text-[16px]">error_outline</span>
+            Rupture de Stock
+          </span>
+          <span *ngIf="(product.quantiteStock || product.stock || 0) > 0 && (product.quantiteStock || product.stock || 0) < 5" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-50 text-orange-600 font-bold text-xs uppercase">
+            <span class="material-symbols-outlined text-[16px]">history</span>
+            Stock Faible : {{ product.quantiteStock || product.stock }} Restants
+          </span>
+          <span *ngIf="(product.quantiteStock || product.stock || 0) >= 5" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-50 text-green-700 font-bold text-xs uppercase">
+            <span class="material-symbols-outlined text-[16px]">check_circle</span>
+            En Stock : {{ product.quantiteStock || product.stock }} {{ product.unite || 'unités' }}
+          </span>
+        </div>
+        <div class="text-sm text-green-700 font-bold mb-4">Produit local fraîchement récolté</div>
+        
+        <hr class="border-t border-gray-100 my-5">
+
+        <!-- QTY -->
+        <div class="mb-5">
+          <label class="block text-sm font-bold text-gray-800 mb-3">Quantité</label>
+          <div class="flex items-center gap-2">
+             <button (click)="decreaseQuantity()" class="w-10 h-10 rounded-xl border border-gray-200 bg-white flex items-center justify-center font-bold text-gray-600 hover:border-green-600 hover:text-green-600 transition">-</button>
+             <span class="w-12 h-10 rounded-xl border border-gray-200 bg-gray-50 flex items-center justify-center font-bold text-gray-800 text-base">{{ quantity }}</span>
+             <button (click)="increaseQuantity()" class="w-10 h-10 rounded-xl border border-gray-200 bg-white flex items-center justify-center font-bold text-gray-600 hover:border-green-600 hover:text-green-600 transition">+</button>
+          </div>
+        </div>
+
+        <hr class="border-t border-gray-100 my-5">
+
+        <!-- DESC -->
+        <div class="mb-5">
+           <h3 class="text-[15px] font-bold text-gray-800 mb-2">Description du produit</h3>
+           <p class="text-sm text-gray-600 leading-relaxed">{{ product.description || 'Description non fournie par le producteur pour cet article. Découvrez nos magnifiques produits cultivés avec passion en agriculture. Frais, savoureux et parfaits pour le quotidien.' }}</p>
+        </div>
+
+        <hr class="border-t border-gray-100 my-5">
+
+        <!-- BUTTONS -->
+        <div class="flex gap-4">
+           <button (click)="addToCart()" class="flex-1 flex items-center justify-center gap-2 bg-green-700 hover:bg-green-800 text-white font-bold py-3.5 rounded-[14px] transition shadow-sm text-sm">
+             <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span> Ajouter au panier
+           </button>
+           <button (click)="buyNow()" class="flex-grow bg-green-700 hover:bg-green-800 text-white font-extrabold py-5 rounded-2xl shadow-xl shadow-green-700/20 transition-all flex items-center justify-center gap-3">
+            <span>Acheter maintenant</span>
+            <span class="material-symbols-outlined text-[20px]">flash_on</span>
+          </button>
+        </div>
+
+        <hr class="border-t border-gray-100 my-6">
+
+        <!-- PRODUCER INFO -->
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <img [src]="product.photoAgriculteur || 'https://ui-avatars.com/api/?name=' + (product.nomAgriculteur || 'Farmer')" class="w-12 h-12 rounded-full object-cover shadow-sm border border-gray-100">
+              <div>
+                <h4 class="font-bold text-[15px] text-gray-800 m-0 leading-tight">{{ product.nomAgriculteur || 'Agriculteur Local' }}</h4>
+                <p class="text-[13px] text-gray-500 font-medium flex items-center gap-1 mt-1 m-0">
+                  <span class="material-symbols-outlined text-[14px]">location_on</span>
+                  {{ product.localite || 'Cameroun' }}
+                </p>
+              </div>
+            </div>
+           
+           <button (click)="contactProducer()" class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl font-semibold text-[13px] text-gray-700 hover:text-green-700 hover:border-green-600 transition shadow-sm">
+             <span class="material-symbols-outlined text-[16px]">chat</span>
+             Contacter
+           </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !product" class="flex-grow flex items-center justify-center">
+    <div class="text-center">
+      <span class="material-symbols-outlined text-gray-400 text-6xl mb-4">production_quantity_limits</span>
+      <h2 class="text-2xl font-bold text-gray-700">Produit introuvable</h2>
+      <button routerLink="/all-product-dist" class="mt-6 text-green-700 font-bold underline">Retour aux produits</button>
+  </div>
+
+  <!-- AUTRES PRODUITS DU PRODUCTEUR -->
+  <div *ngIf="farmerProducts.length > 0" class="mt-16">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-extrabold text-gray-900">Autres produits du producteur</h2>
+      <a [routerLink]="['/all-product-dist']" [queryParams]="{search: product?.nomAgriculteur}"
+         class="text-sm font-bold text-green-700 hover:text-green-800 transition-colors">
+        Voir tout <span class="material-symbols-outlined text-[14px] ml-1 align-middle">arrow_forward</span>
+      </a>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div *ngFor="let fp of farmerProducts"
+           [routerLink]="['/produit', fp.idProduit || fp.id]"
+           class="bg-white rounded-2xl p-3 shadow-sm hover:shadow-md transition-all cursor-pointer group">
+        <img [src]="fp.photo || fp.imageProduit || 'https://via.placeholder.com/150'"
+             class="w-full h-32 object-cover rounded-xl mb-3 group-hover:scale-105 transition-transform">
+        <h4 class="font-bold text-sm text-gray-800 truncate">{{ fp.nomProduit || fp.nom }}</h4>
+        <div class="flex items-center justify-between mt-2">
+          <span class="font-extrabold text-green-700">{{ fp.prix }} FCFA</span>
+          <span class="text-[10px] text-gray-400">{{ fp.localite || '' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

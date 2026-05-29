@@ -1,0 +1,108 @@
+/* Home Premium Styling */
+:host {
+  --primary-green: #15803d;
+  --secondary-green: #22c55e;
+  --bg-soft: #f8fafc;
+}
+
+.home-container {
+  background-color: var(--bg-soft);
+  min-height: 100vh;
+}
+
+/* Hero Section Enhancement */
+.hero-card {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+}
+
+.hero-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 50px -12px rgba(21, 128, 61, 0.25);
+}
+
+/* Category Cards */
+.category-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.category-card:hover img {
+  scale: 1.1;
+}
+
+/* Product Cards */
+.product-card {
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.08);
+  border-color: rgba(21, 128, 61, 0.1);
+}
+
+.favorite-btn {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.2s ease;
+}
+
+.product-card:hover .favorite-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Section Header */
+.section-title {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 8px;
+}
+
+.status-pill::before {
+    content: '';
+    position: absolute;
+    left: 0.6rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.material-symbols-outlined.filled {
+    font-variation-settings: 'FILL' 1;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 4px;
+  background: var(--primary-green);
+  border-radius: 2px;
+}
+
+/* Empty States */
+.empty-state {
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Navbar integration tweaks */
+::ng-deep app-navbar {
+    z-index: 100;
+    position: relative;
+}

@@ -1,0 +1,226 @@
+<div class="farmer-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="farmer-sidebar">
+    <div>
+      <div class="logo">
+        <h2>Mboa<span>Market</span></h2>
+        <p>Centre de Marché</p>
+      </div>
+      <nav>
+        <div class="nav-item active" routerLink="/farmer">
+          <span class="icon material-symbols-outlined">dashboard</span>
+          <span>Tableau de bord</span>
+        </div>
+        <div class="nav-item" routerLink="/produits">
+          <span class="icon material-symbols-outlined">inventory_2</span>
+          <span>Produits</span>
+        </div>
+        <div class="nav-item" routerLink="/commande-farmer">
+          <span class="icon material-symbols-outlined">shopping_cart</span>
+          <span>Commandes</span>
+        </div>
+        <div class="nav-item" routerLink="/messages">
+          <span class="icon material-symbols-outlined">chat</span>
+          <span>Messages</span>
+        </div>
+        <div class="nav-item" routerLink="/settings-farmer">
+          <span class="icon material-symbols-outlined">settings</span>
+          <span>Paramètres</span>
+        </div>
+      </nav>
+    </div>
+    <div>
+      <div class="nav-item" (click)="showLogoutModal = true" style="color:#ef4444;">
+        <span class="icon material-symbols-outlined">logout</span>
+        <span>Déconnexion</span>
+      </div>
+      <div class="flex items-center gap-3 px-3 pt-4 mt-3 border-t border-slate-100">
+        <img [src]="user?.photo || 'https://i.pravatar.cc/44?u=' + user?.nom" class="w-11 h-11 rounded-full object-cover border-2 border-white shadow-sm">
+        <div>
+          <p class="text-sm font-bold text-slate-800 m-0">{{ user?.nom }}</p>
+          <span class="text-[10px] font-bold text-green-600 uppercase tracking-wider">{{ user?.role }}</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="farmer-content">
+
+    <!-- TOPBAR -->
+    <header class="farmer-topbar">
+      <div class="search-box">
+        <span class="material-symbols-outlined text-slate-400 text-[20px]">search</span>
+        <input type="text" placeholder="Rechercher un produit ou une commande">
+      </div>
+      <div class="topbar-right">
+        <div class="relative">
+          <button (click)="toggleNotifications()" class="relative w-10 h-10 rounded-xl hover:bg-slate-100 flex items-center justify-center transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-slate-500 text-[24px]">notifications</span>
+            <span *ngIf="unreadCount > 0"
+                  class="absolute -top-0.5 -right-0.5 bg-green-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full min-w-[18px] text-center shadow-lg shadow-green-500/30">
+              {{ unreadCount > 9 ? '9+' : unreadCount }}
+            </span>
+          </button>
+
+          <!-- Notifications Dropdown -->
+          <div *ngIf="showNotifications"
+               class="absolute right-0 top-12 w-80 bg-white rounded-2xl shadow-xl border border-slate-100 z-50 overflow-hidden">
+            <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+              <h3 class="text-sm font-black text-slate-800">Notifications</h3>
+              <span class="text-[10px] font-bold text-green-600">{{ unreadCount }} non lue(s)</span>
+            </div>
+            <div class="max-h-72 overflow-y-auto">
+              <div *ngFor="let n of notifications"
+                   (click)="handleNotificationClick(n)"
+                   class="flex items-start gap-3 p-4 border-b border-slate-50 hover:bg-green-50 transition-colors cursor-pointer"
+                   [ngClass]="{'bg-green-50': !n.lu}">
+                <div class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
+                     [ngClass]="{'bg-green-50': !n.lu, 'bg-slate-50': n.lu}">
+                  <span class="material-symbols-outlined text-[16px] text-green-600">notifications_active</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-bold text-slate-800 truncate">{{ n.titre }}</p>
+                  <p class="text-[12px] text-slate-500 mt-0.5 leading-relaxed">{{ n.message }}</p>
+                  <p class="text-[10px] text-slate-400 font-medium mt-1">{{ n.dateNotification | date:'dd/MM/yyyy HH:mm' }}</p>
+                </div>
+                <button (click)="deleteNotification($event, n.idNotification)"
+                        class="text-slate-300 hover:text-red-500 transition-colors shrink-0 mt-1">
+                  <span class="material-symbols-outlined text-[16px]">close</span>
+                </button>
+              </div>
+              <div *ngIf="notifications.length === 0" class="text-center py-8 text-slate-400 text-sm font-medium">
+                <span class="material-symbols-outlined text-3xl block mb-2">notifications_off</span>
+                Aucune notification
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 pl-4 border-l border-slate-200">
+          <div class="text-right">
+            <p class="text-sm font-bold text-slate-700 leading-tight">Bonjour, <span class="text-green-700">{{ user?.nom || 'Agriculteur' }}</span></p>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{{ user?.role === 'AGRICULTEUR' ? 'Agriculteur' : user?.role }}</span>
+          </div>
+          <img [src]="user?.photo || 'https://i.pravatar.cc/40?u=' + user?.nom" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm">
+        </div>
+      </div>
+    </header>
+
+    <!-- STATS -->
+    <div class="farmer-stats">
+      <div class="farmer-stat-card animate-fade-in-up">
+        <div class="stat-icon" style="background:#f0fdf4;color:#16a34a;">
+          <span class="material-symbols-outlined">inventory_2</span>
+        </div>
+        <p class="stat-label">Produits Actifs</p>
+        <p class="stat-value">{{ stats.activeCount }}</p>
+      </div>
+
+      <div class="farmer-stat-card animate-fade-in-up animate-fade-in-up-delay-1">
+        <div class="stat-icon" style="background:#fef3c7;color:#d97706;">
+          <span class="material-symbols-outlined">list_alt</span>
+        </div>
+        <p class="stat-label">Commandes en attente</p>
+        <p class="stat-value">{{ stats.pendingOrders }}</p>
+      </div>
+
+      <div class="farmer-stat-card animate-fade-in-up animate-fade-in-up-delay-2">
+        <div class="stat-icon" style="background:#ecfdf5;color:#059669;">
+          <span class="material-symbols-outlined">payments</span>
+        </div>
+        <p class="stat-label">Ventes Totales</p>
+        <p class="stat-value text-green-700">{{ stats.totalSales }} FCFA</p>
+      </div>
+
+      <div class="farmer-stat-card animate-fade-in-up animate-fade-in-up-delay-3" [class.danger]="stats.lowStockCount > 0">
+        <div class="stat-icon" [style.background]="stats.lowStockCount > 0 ? '#fef2f2' : '#f0fdf4'" [style.color]="stats.lowStockCount > 0 ? '#dc2626' : '#16a34a'">
+          <span class="material-symbols-outlined">warning</span>
+        </div>
+        <p class="stat-label">Stock Faible</p>
+        <p class="stat-value">{{ stats.lowStockCount }}</p>
+      </div>
+    </div>
+
+    <!-- PRODUITS RÉCENTS -->
+    <div class="farmer-page-header">
+      <div>
+        <h2>Mes Produits récents</h2>
+        <p>Suivez l'évolution de votre inventaire en temps réel.</p>
+      </div>
+      <button class="btn-primary" routerLink="/add-product">
+        <span class="material-symbols-outlined text-[18px]">add</span>
+        Ajouter un produit
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+      <div *ngFor="let product of displayProducts" class="product-card">
+        <div class="product-image">
+          <span class="absolute top-3 left-3 z-10 badge"
+                [class.badge-green]="(product.qteProduit || 0) >= 5"
+                [class.badge-orange]="(product.qteProduit || 0) > 0 && (product.qteProduit || 0) < 5"
+                [class.badge-red]="(product.qteProduit || 0) === 0">
+            {{ (product.qteProduit || 0) >= 5 ? 'En Stock' : ((product.qteProduit || 0) === 0 ? 'Rupture' : 'Stock Faible') }}
+          </span>
+          <button (click)="$event.stopPropagation(); router.navigate(['/update-product', product.idProduit])"
+                  class="absolute top-3 right-3 z-10 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-sm hover:bg-green-50 transition-all">
+            <span class="material-symbols-outlined text-[16px] text-green-600">edit</span>
+          </button>
+          <img [src]="product.photo || 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=600'"
+               [alt]="product.nomProduit">
+        </div>
+        <div class="product-body">
+          <h4 class="font-bold text-slate-900 text-[15px] m-0 truncate">{{ product.nomProduit }}</h4>
+          <p class="text-[13px] font-bold text-green-700 mt-1 mb-3">
+            {{ product.prix }} <span class="text-[10px] text-slate-400 font-semibold">FCFA</span>
+            <span class="text-[11px] text-slate-400 font-medium ml-1">/ {{ product.uniteMesure || 'unité' }}</span>
+          </p>
+          <div class="flex justify-between items-center text-xs font-semibold">
+            <span class="text-slate-400">Quantité</span>
+            <span class="text-slate-700">{{ product.qteProduit }} {{ product.uniteMesure || 'unités' }}</span>
+          </div>
+          <div class="mt-2 h-[5px] bg-slate-100 rounded-full overflow-hidden">
+            <div class="h-full rounded-full transition-all duration-500"
+                 [style.width.%]="Math.min((product.qteProduit || 0) / 50 * 100, 100)"
+                 [class.bg-green-600]="(product.qteProduit || 0) >= 10"
+                 [class.bg-orange-500]="(product.qteProduit || 0) < 10 && (product.qteProduit || 0) >= 1"
+                 [class.bg-red-500]="(product.qteProduit || 0) < 1">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 text-right">
+      <a routerLink="/produits" class="inline-flex items-center gap-2 text-sm font-bold text-green-700 hover:text-green-800 transition-colors">
+        Gérer tous mes produits
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+  </main>
+</div>
+
+<!-- LOGOUT CONFIRMATION MODAL -->
+<div class="modal-overlay" *ngIf="showLogoutModal" (click)="showLogoutModal = false">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="flex flex-col items-center text-center">
+      <div class="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-red-500 text-[32px]">logout</span>
+      </div>
+      <h3 class="text-lg font-black text-slate-900 mb-2">Déconnexion</h3>
+      <p class="text-sm text-slate-400 font-medium mb-6 max-w-xs">
+        Êtes-vous sûr de vouloir vous déconnecter ? Vous devrez vous reconnecter pour accéder à votre compte.
+      </p>
+      <div class="flex gap-3 w-full">
+        <button class="btn-secondary flex-1" (click)="showLogoutModal = false">
+          Annuler
+        </button>
+        <button class="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-black rounded-2xl text-sm transition-all shadow-lg shadow-red-500/25" (click)="logout()">
+          Se déconnecter
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

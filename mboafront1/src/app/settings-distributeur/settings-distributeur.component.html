@@ -1,0 +1,178 @@
+<div class="distributor-layout min-h-screen bg-[#fbfbe2] font-sans">
+  
+  <!-- NAVBAR -->
+  <header class="navbar flex items-center justify-between px-10 py-5 bg-[#fbfbe2]">
+    <div class="flex items-center gap-10">
+      <div class="logo flex items-center gap-2" routerLink="/home" style="cursor:pointer">
+        <h1 class="text-xl font-extrabold text-[#1a1a1a]">Mboa<span class="text-[#22c55e]">Market</span></h1>
+      </div>
+      <div class="nav-divider h-6 w-[1.5px] bg-gray-300"></div>
+      
+      <nav class="ml-10 flex gap-10 text-sm font-semibold text-gray-500">
+        <a routerLink="/home" class="hover:text-green-700">Accueil</a>
+        <a routerLink="/commande-distributeur" class="hover:text-green-700">Mes Commandes</a>
+        <a routerLink="/messages" class="hover:text-green-700">Messages</a>
+        <a routerLink="/all-product-dist" class="hover:text-green-700">Producteurs</a>
+      </nav>
+    </div>
+
+    <div class="flex items-center gap-6">
+      <a routerLink="/home" class="w-10 h-10 rounded-xl hover:bg-gray-100 flex items-center justify-center transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-gray-600 text-[24px]">home</span>
+      </a>
+      <img [src]="user?.photo || 'https://i.pravatar.cc/40?u=' + user?.nom" alt="User" class="w-10 h-10 rounded-full border-2 border-green-600">
+    </div>
+  </header>
+
+  <main class="content px-10 py-12 max-w-[1200px] mx-auto">
+    
+    <!-- HEADER -->
+    <div class="mb-12">
+      <a routerLink="/commande-distributeur" class="flex items-center gap-2 text-green-600 hover:text-green-700 font-bold text-sm mb-6 transition-colors cursor-pointer">
+        <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+        Retour
+      </a>
+      <h1 class="text-4xl font-extrabold text-[#1a1a1a]">Paramètres</h1>
+      <p class="text-gray-500 mt-2">Gérez vos préférences et la sécurité de votre compte</p>
+    </div>
+
+    <!-- SETTINGS GRID -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+      <!-- MAIN CONTENT -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- PROFILE SECTION -->
+        <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+          <div class="flex items-start justify-between mb-6">
+            <div>
+              <h3 class="text-lg font-black text-gray-900">Informations du Profil</h3>
+              <p class="text-sm text-gray-500 mt-1">Mettez à jour vos informations personnelles</p>
+            </div>
+            <span class="material-symbols-outlined text-gray-400 text-[32px]">person</span>
+          </div>
+          
+          <div class="p-4 bg-gray-50 rounded-2xl mb-6">
+            <div class="flex items-center gap-4">
+              <img [src]="user?.photo || 'https://i.pravatar.cc/56?u=' + user?.nom" alt="User" class="w-14 h-14 rounded-full border-2 border-green-600">
+              <div>
+                <p class="font-bold text-gray-900">{{ user?.nom }}</p>
+                <p class="text-sm text-gray-500">{{ user?.email }}</p>
+              </div>
+            </div>
+          </div>
+
+          <button (click)="goToEditProfile()" class="w-full px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-2xl font-bold transition-all text-sm">
+            <span class="material-symbols-outlined text-[16px] me-2 align-middle">edit</span>
+            Modifier le profil
+          </button>
+        </div>
+
+        <!-- NOTIFICATIONS SECTION -->
+        <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+          <div class="flex items-start justify-between mb-6">
+            <div>
+              <h3 class="text-lg font-black text-gray-900">Notifications</h3>
+              <p class="text-sm text-gray-500 mt-1">Gérez vos préférences de notification</p>
+            </div>
+            <span class="material-symbols-outlined text-gray-400 text-[32px]">notifications</span>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Push Notifications -->
+            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
+              <div>
+                <p class="font-bold text-gray-900 text-sm">Notifications push</p>
+                <p class="text-xs text-gray-500 mt-1">Recevoir des alertes sur vos commandes</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" [(ngModel)]="notificationsEnabled" (change)="toggleNotifications()" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+              </label>
+            </div>
+
+            <!-- Email Notifications -->
+            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
+              <div>
+                <p class="font-bold text-gray-900 text-sm">Notifications par email</p>
+                <p class="text-xs text-gray-500 mt-1">Recevoir un résumé par email</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" [(ngModel)]="emailNotifications" (change)="toggleEmailNotifications()" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECURITY SECTION -->
+        <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+          <div class="flex items-start justify-between mb-6">
+            <div>
+              <h3 class="text-lg font-black text-gray-900">Sécurité</h3>
+              <p class="text-sm text-gray-500 mt-1">Protégez votre compte</p>
+            </div>
+            <span class="material-symbols-outlined text-gray-400 text-[32px]">lock</span>
+          </div>
+
+          <button (click)="goToEditProfile()" class="w-full px-6 py-3 border-2 border-gray-200 hover:bg-gray-50 text-gray-900 rounded-2xl font-bold transition-all text-sm">
+            <span class="material-symbols-outlined text-[16px] me-2 align-middle">vpn_key</span>
+            Changer le mot de passe
+          </button>
+        </div>
+
+        <!-- DANGER ZONE -->
+        <div class="bg-red-50 rounded-3xl p-8 border border-red-200">
+          <div class="flex items-start justify-between mb-6">
+            <div>
+              <h3 class="text-lg font-black text-red-700">Zone de Danger</h3>
+              <p class="text-sm text-red-600 mt-1">Actions irréversibles</p>
+            </div>
+            <span class="material-symbols-outlined text-red-400 text-[32px]">warning</span>
+          </div>
+
+          <button (click)="deleteAccount()" class="w-full px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-bold transition-all text-sm">
+            <span class="material-symbols-outlined text-[16px] me-2 align-middle">delete_forever</span>
+            Supprimer mon compte
+          </button>
+        </div>
+
+      </div>
+
+      <!-- SIDEBAR -->
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 sticky top-8">
+          <h3 class="text-sm font-black text-gray-700 mb-6 uppercase tracking-widest">Compte</h3>
+
+          <div class="space-y-4">
+            <div class="p-4 bg-gray-50 rounded-2xl">
+              <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Email</p>
+              <p class="text-sm font-bold text-gray-900">{{ user?.email }}</p>
+            </div>
+
+            <div class="p-4 bg-gray-50 rounded-2xl">
+              <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Rôle</p>
+              <p class="text-sm font-bold text-gray-900">Distributeur</p>
+            </div>
+
+            <div class="p-4 bg-gray-50 rounded-2xl">
+              <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Statut</p>
+              <div class="flex items-center gap-2 mt-1">
+                <span class="w-2 h-2 bg-green-600 rounded-full"></span>
+                <p class="text-sm font-bold text-gray-900">Actif</p>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-6 border-gray-100">
+
+          <button (click)="confirmLogout()" class="w-full px-6 py-3 border-2 border-red-200 hover:bg-red-50 text-red-600 rounded-2xl font-bold transition-all text-sm">
+            <span class="material-symbols-outlined text-[16px] me-2 align-middle">logout</span>
+            Déconnexion
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>

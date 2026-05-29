@@ -1,0 +1,212 @@
+<div class="farmer-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="farmer-sidebar">
+    <div>
+      <div class="logo">
+        <h2>Mboa<span>Market</span></h2>
+        <p>Centre de Marché</p>
+      </div>
+      <nav>
+        <div class="nav-item" routerLink="/farmer">
+          <span class="icon material-symbols-outlined">dashboard</span>
+          <span>Tableau de bord</span>
+        </div>
+        <div class="nav-item" routerLink="/produits">
+          <span class="icon material-symbols-outlined">inventory_2</span>
+          <span>Produits</span>
+        </div>
+        <div class="nav-item active" routerLink="/commande-farmer">
+          <span class="icon material-symbols-outlined">shopping_cart</span>
+          <span>Commandes</span>
+        </div>
+        <div class="nav-item" routerLink="/messages">
+          <span class="icon material-symbols-outlined">chat</span>
+          <span>Messages</span>
+        </div>
+      </nav>
+    </div>
+    <div>
+      <div class="nav-item" routerLink="/settings-farmer">
+        <span class="icon material-symbols-outlined">settings</span>
+        <span>Paramètres</span>
+      </div>
+      <div class="flex items-center gap-3 px-3 pt-4 mt-3 border-t border-slate-100">
+        <img [src]="user?.photo || 'https://i.pravatar.cc/44?u=' + user?.nom" class="w-11 h-11 rounded-full object-cover border-2 border-white shadow-sm">
+        <div>
+          <p class="text-sm font-bold text-slate-800 m-0">{{ user?.nom }}</p>
+          <span class="text-[10px] font-bold text-green-600 uppercase tracking-wider">{{ user?.role }}</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="farmer-content">
+
+    <!-- TOPBAR -->
+    <header class="farmer-topbar">
+      <div class="search-box">
+        <span class="material-symbols-outlined text-slate-400 text-[20px]">search</span>
+        <input type="text" placeholder="Rechercher un distributeur ou produit...">
+      </div>
+      <div class="topbar-right">
+        <div class="relative cursor-pointer">
+          <span class="material-symbols-outlined text-slate-500 text-[22px]">notifications</span>
+          <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-600 rounded-full border-2 border-white"></span>
+        </div>
+        <img [src]="user?.photo || 'https://i.pravatar.cc/40?u=' + user?.nom" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm">
+      </div>
+    </header>
+
+    <!-- STATS -->
+    <div class="grid grid-cols-2 gap-5 mb-8">
+      <div class="bg-green-800 rounded-3xl p-6 shadow-lg shadow-green-900/20">
+        <p class="text-green-200 text-[11px] font-bold uppercase tracking-widest mb-2">Revenu Total</p>
+        <div class="flex items-baseline gap-2">
+          <span class="text-4xl font-black text-white">{{ totalRevenue | number:'1.0-0' }}</span>
+          <span class="text-sm font-bold text-green-300">FCFA</span>
+        </div>
+      </div>
+      <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm">
+        <p class="text-slate-400 text-[11px] font-bold uppercase tracking-widest mb-2">Commandes Confirmées</p>
+        <span class="text-4xl font-black text-slate-900">{{ confirmedOrders }}</span>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="data-table-container">
+      <div class="toolbar px-6 pt-6">
+        <div class="search-input">
+          <span class="material-symbols-outlined text-slate-400 text-[18px]">search</span>
+          <input type="text" placeholder="Rechercher un distributeur ou produit...">
+        </div>
+        <div class="toolbar-actions">
+          <button class="btn-secondary text-xs px-4 py-2.5">
+            <span class="material-symbols-outlined text-[16px]">tune</span>
+            Filtrer
+          </button>
+          <button class="btn-primary text-xs px-4 py-2.5">
+            <span class="material-symbols-outlined text-[16px]">download</span>
+            Exporter CSV
+          </button>
+        </div>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Distributeur</th>
+            <th>Produits</th>
+            <th>Quantité</th>
+            <th>Montant</th>
+            <th>Statut</th>
+            <th style="text-align:center;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders">
+            <td class="font-semibold text-slate-700">{{ order.date }}</td>
+            <td>
+              <div class="flex items-center gap-3 cursor-pointer" (click)="contactDistributor(order)">
+                <div class="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-amber-800"
+                     [style.background]="order.color">{{ order.icon }}</div>
+                <span class="font-bold text-sm text-slate-800 hover:text-green-700 transition-colors">{{ order.distributor }}</span>
+              </div>
+            </td>
+            <td class="text-sm text-slate-500 max-w-[200px] truncate">{{ order.product }}</td>
+            <td class="font-semibold text-sm text-slate-700">{{ order.quantity }}</td>
+            <td class="font-extrabold text-green-700">{{ order.amount | number:'1.0-0' }} FCFA</td>
+            <td>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-bold tracking-wide"
+                    [ngClass]="{
+                      'bg-amber-50 text-amber-700': order.statut === 'ENCOURS',
+                      'bg-green-50 text-green-700': order.statut === 'CONFIRMEE',
+                      'bg-purple-50 text-purple-700': order.statut === 'ATTENTE_CONFIRMATION',
+                      'bg-blue-50 text-blue-700': order.statut === 'LIVREE',
+                      'bg-red-50 text-red-700': order.statut === 'ANNULEE'
+                    }">
+                <span class="w-1.5 h-1.5 rounded-full"
+                      [ngClass]="{
+                        'bg-amber-500': order.statut === 'ENCOURS',
+                        'bg-green-500': order.statut === 'CONFIRMEE',
+                        'bg-purple-500': order.statut === 'ATTENTE_CONFIRMATION',
+                        'bg-blue-500': order.statut === 'LIVREE',
+                        'bg-red-500': order.statut === 'ANNULEE'
+                      }"></span>
+                {{ order.statut === 'ENCOURS' ? 'En cours' : order.statut === 'CONFIRMEE' ? 'Confirmée' : order.statut === 'ATTENTE_CONFIRMATION' ? 'En attente' : order.statut === 'LIVREE' ? 'Livrée' : 'Annulée' }}
+              </span>
+            </td>
+            <td class="text-center">
+              <div class="flex items-center justify-center gap-1.5">
+                <button *ngIf="order.statut === 'CONFIRMEE'" (click)="openPreparer(order)"
+                        class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 hover:bg-amber-100 transition-all inline-flex items-center justify-center"
+                        title="Préparer la livraison">
+                  <span class="material-symbols-outlined text-[18px]">local_shipping</span>
+                </button>
+                <button *ngIf="order.statut === 'ATTENTE_CONFIRMATION'" (click)="validerLivraisonAgriculteur(order)"
+                        class="w-auto px-3 h-9 rounded-xl bg-green-600 text-white hover:bg-green-700 transition-all inline-flex items-center gap-1.5 font-bold text-xs"
+                        title="Confirmer la livraison">
+                  <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                  Confirmer
+                </button>
+                <button (click)="downloadReceipt(order)"
+                        class="w-9 h-9 rounded-xl bg-green-50 text-green-700 hover:bg-green-100 transition-all inline-flex items-center justify-center"
+                        title="Télécharger le reçu">
+                  <span class="material-symbols-outlined text-[18px]">download</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="orders.length === 0">
+            <td colspan="7" class="text-center !py-16">
+              <span class="material-symbols-outlined text-4xl text-slate-200 block mb-3">receipt_long</span>
+              <p class="text-slate-400 font-medium">Aucune commande reçue pour le moment.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="pagination-bar">
+        <p class="info">Affichage de {{ itemsPerPage }} sur {{ totalOrders }} commandes</p>
+        <div class="pages">
+          <button class="page-btn"><span class="material-symbols-outlined text-[16px]">chevron_left</span></button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn"><span class="material-symbols-outlined text-[16px]">chevron_right</span></button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- PREPARER LIVRAISON MODAL -->
+<div class="modal-overlay" *ngIf="showPreparerModal" (click)="closePreparer()">
+  <div class="modal-content" (click)="$event.stopPropagation()" style="max-width: 420px;">
+    <div class="text-center">
+      <div class="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <span class="material-symbols-outlined text-amber-600 text-[32px]">local_shipping</span>
+      </div>
+      <h3 class="text-lg font-black text-slate-900 mb-2">Préparer la livraison</h3>
+      <p class="text-sm text-slate-400 font-medium mb-6">
+        Confirmez la préparation de la commande <strong>#{{ selectedOrder?.id }}</strong>
+      </p>
+      <p class="text-xs text-slate-500 mb-6">
+        La quantité livrée sera celle définie dans la commande. Le distributeur pourra demander la confirmation une fois la livraison effectuée.
+      </p>
+      <p class="text-xs text-slate-400 mb-6" *ngIf="selectedOrder?.quantiteLivree">
+        Quantité livrée : <strong>{{ selectedOrder?.quantiteLivree }}</strong>
+      </p>
+      <div class="flex gap-3">
+        <button class="btn-secondary flex-1" (click)="closePreparer()">Annuler</button>
+        <button class="flex-1 px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-black rounded-2xl text-sm transition-all"
+                (click)="submitPreparer()">
+          Confirmer la préparation
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

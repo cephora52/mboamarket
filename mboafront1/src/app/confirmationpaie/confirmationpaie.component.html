@@ -1,0 +1,104 @@
+<div class="bg-[#fbfbe2] text-gray-900 min-h-screen flex flex-col font-sans">
+
+  <main class="max-w-[1000px] w-full mx-auto px-6 py-6 flex-grow flex flex-col items-center">
+    
+    <!-- BREADCRUMBS (Very Softer) -->
+    <nav class="flex items-center gap-2 text-[9px] font-bold uppercase tracking-wider mb-10 w-full justify-center md:justify-start">
+      <a routerLink="/panier" class="text-gray-400 hover:text-green-700">Panier</a>
+      <span class="material-symbols-outlined text-[10px] text-gray-300">chevron_right</span>
+      <a routerLink="/paiement" class="text-gray-400 hover:text-green-700">Paiement</a>
+      <span class="material-symbols-outlined text-[10px] text-gray-300">chevron_right</span>
+      <span class="text-green-700 border-b-2 border-green-700 pb-0.5">Confirmation</span>
+    </nav>
+
+    <div class="flex flex-col md:flex-row items-center justify-center gap-10 w-full">
+      <!-- LEFT: SUCCESS MESSAGE (Smaller) -->
+      <div class="w-full md:w-1/2 text-center md:text-left animate-in fade-in slide-in-from-left-4 duration-500">
+        <h1 class="text-lg font-black mb-6 text-center md:text-left cursor-pointer" routerLink="/home">
+        Mboa<span class="text-green-700">Market</span>
+      </h1>
+
+        <div class="w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center mb-6 mx-auto md:mx-0 shadow-lg shadow-green-500/20">
+          <span class="material-symbols-outlined text-[36px] font-bold">check</span>
+        </div>
+
+        <h2 class="text-2xl font-black text-gray-900 mb-4 leading-tight tracking-tight">
+          Commande <br> confirmée avec <br> succès !
+        </h2>
+        
+        <p class="text-gray-500 text-sm mb-6 max-w-sm leading-relaxed font-medium">
+          Merci pour votre confiance. Votre commande a été transmise à notre équipe logistique.
+        </p>
+
+        <button routerLink="/home" 
+                class="inline-flex items-center gap-2 bg-[#e9e9d6] hover:bg-[#e1e1cd] text-gray-800 font-bold py-3 px-8 rounded-xl transition-all active:scale-95 text-sm shadow-sm">
+          <span>Retour à l'accueil</span>
+        </button>
+      </div>
+
+      <!-- RIGHT: RECAP CARDS (Compact) -->
+      <div class="w-full md:w-[380px] space-y-4 animate-in fade-in slide-in-from-right-4 duration-500 delay-200">
+        
+        <!-- PAYMENT CARD -->
+        <div class="bg-white rounded-[24px] p-5 shadow-sm border border-gray-100">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="material-symbols-outlined text-green-600 text-[16px]">payments</span>
+            <span class="text-[9px] font-black tracking-widest uppercase text-green-600">PAIEMENT EFFECTUÉ</span>
+          </div>
+          
+          <div class="flex items-center gap-3 mb-3">
+             <!-- DYNAMIC LOGO -->
+             <div *ngIf="orderData?.method === 'MTN'" class="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center text-black font-black text-[10px] shadow-sm">MTN</div>
+             <div *ngIf="orderData?.method === 'ORANGE'" class="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center text-white font-black text-[10px] shadow-sm">OM</div>
+             
+             <div>
+               <h3 class="text-base font-black text-gray-900 mb-0.5">{{ orderData?.method === 'MTN' ? 'MTN Mobile Money' : 'Orange Money' }}</h3>
+               <p class="text-[10px] text-gray-400 font-bold">Prélevé sur {{ maskedPhone }}</p>
+             </div>
+          </div>
+          
+          <div class="flex items-center gap-1.5 py-1 px-2 bg-gray-50 rounded-md w-fit">
+            <span class="material-symbols-outlined text-green-500 text-[12px]">verified_user</span>
+            <span class="text-[8px] font-black text-gray-400 uppercase tracking-tight">Transaction sécurisée</span>
+          </div>
+        </div>
+
+        <!-- RECAP CARD -->
+        <div class="bg-white rounded-[24px] p-6 shadow-sm border border-gray-100">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-base font-black text-gray-900">Récapitulatif</h3>
+            <span class="text-[10px] font-bold text-gray-400">{{ orderData?.items?.length || 0 }} articles</span>
+          </div>
+
+          <div class="space-y-4 mb-6 max-h-[160px] overflow-y-auto pr-1">
+            <div *ngFor="let item of orderData?.items" class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0 border border-gray-50">
+                <img [src]="item.product.imageProduit || item.product.photo || item.product.image" 
+                     class="w-full h-full object-cover">
+              </div>
+              <div class="flex-grow min-w-0">
+                <h4 class="font-bold text-xs text-gray-900 truncate">{{ item.product.nomProduit || item.product.nom }}</h4>
+                <p class="text-[9px] text-gray-400 font-bold uppercase tracking-tighter">{{ item.quantity }} unité(s)</p>
+              </div>
+              <span class="text-xs font-black text-gray-900 whitespace-nowrap">{{ item.quantity * item.product.prix }}</span>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-gray-100">
+            <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-0.5">Total payé (TTC)</p>
+            <p class="text-xl font-black text-green-700 tracking-tighter">{{ orderData?.amount }} FCFA</p>
+          </div>
+        </div>
+
+        <!-- SUPPORT LINK -->
+        <div class="text-center pt-2">
+          <p class="text-[10px] text-gray-400 font-bold flex items-center justify-center gap-1.5 mb-1">
+             <span class="material-symbols-outlined text-[12px]">headset_mic</span>
+             Un problème ?
+          </p>
+          <a class="text-green-700 font-black text-xs hover:underline cursor-pointer">Support Client MboaMarket</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,20 @@
+# IntelliJ
+.idea/
+
+# Angular
+**/node_modules/
+**/dist/
+**/.angular/
+
+# Spring Boot
+**/target/
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
